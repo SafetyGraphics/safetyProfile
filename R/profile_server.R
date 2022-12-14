@@ -10,12 +10,15 @@
 #' @import shiny
 #' @importFrom DT renderDT
 #' @importFrom purrr map
+#' @importFrom dplyr filter
+#' @importFrom magrittr %>%
+#' @importFrom rlang sym !!
 #' @export
 
 profile_server <- function(input, output, session, params) {
     ns <- session$ns
     cat('starting server')
-    
+
     ## set up some basic reactives for convenience
     id_col<-reactive({
 
@@ -26,22 +29,21 @@ profile_server <- function(input, output, session, params) {
         req(params()$data$dm)
         unique(params()$data$dm[[id_col()]])
     })
-    
+
     ## Update ID Select
     observe({
         updateSelectizeInput(
             session,
             inputId = 'idSelect',
             choices = ids()
-            #selected = current 
-        )    
+            #selected = current
+        )
     })
 
 
     ## Show data for the selected
     # TODO Make this dynamic for any domain provided (use a sub-module?)
-    output$aeListing <- renderDT({params()$data$aes})
-    #output$aeListing <- renderDT({params()$data$aes %>% filter(id_col() == input$idSelect,)})
-    output$labListing <- renderDT({params()$data$labs})
-    output$dmListing <- renderDT({params()$data$dm})
+    output$aeListing <- renderDT({params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)})
+    output$labListing <- renderDT({params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)})
+    output$dmListing <- renderDT({params()$data$dm %>% filter(!!sym(id_col()) == input$idSelect)})
 }

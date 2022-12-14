@@ -6,7 +6,7 @@
 \usage{
 profileApp(
   data = list(aes = safetyData::adam_adae, dm = safetyData::adam_adsl, labs =
-    safetyData::adam_adlb),
+    safetyData::adam_adlbc),
   settings = NULL,
   runNow = TRUE
 )
