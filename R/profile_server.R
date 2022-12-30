@@ -46,7 +46,13 @@ profile_server <- function(input, output, session, params) {
 
     aes_sub <-  reactive({
         req(params()$data$aes)
-        params()$data$aes %>% select(USUBJID, SITEID, TRTA, AENDT, AENDY, AEBODSYS)
+        params()$data$aes %>% select(params()$settings$dm$id_col,
+                                     SITEID,
+                                     TRTA,
+                                     AENDT,
+                                     AENDY,
+                                     params()$settings$bodsys_col,
+                                     AETERM)
     })
 
     observe({

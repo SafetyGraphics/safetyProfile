@@ -31,26 +31,8 @@ profile_ui <- function(id) {
                              label="Select Data Domain",
                              choices=c()
                          ),
-                         # h5(""),
                          DTOutput(ns("overview")))
             ),
-            # tabPanel("AEs",
-            #     div(
-            #         h5("AE"),
-            #         DTOutput(ns("aeListing")))
-            #     ),
-            # tabPanel("Labs",
-            #     div(
-            #         h5(htmlOutput(ns("Lab Listing"))),
-            #         DTOutput(ns("labListing"))
-            #     ),
-            # ),
-            # tabPanel("DM",
-            #     div(
-            #         h5(htmlOutput(ns("DM Listing"))),
-            #         DTOutput(ns("dmListing"))
-            #     ),
-            # ),
             tabPanel("Plot",
                  div(
                      h5(htmlOutput(ns("Plot"))),
