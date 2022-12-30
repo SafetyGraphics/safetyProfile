@@ -33,9 +33,9 @@ profile_ui <- function(id) {
                          ),
                          DTOutput(ns("overview")))
             ),
-            tabPanel("Plot",
+            tabPanel("AE Plot",
                  div(
-                     h5(htmlOutput(ns("Plot"))),
+                     h5(htmlOutput(ns("AE Plot"))),
                      plotOutput(ns("AEplot")),
                      DTOutput(ns("AEtable"))
                  ),

@@ -47,16 +47,12 @@ profile_server <- function(input, output, session, params) {
     aes_sub <-  reactive({
         req(params()$data$aes)
         params()$data$aes %>% select(params()$settings$dm$id_col,
-                                     SITEID,
-                                     TRTA,
-                                     AENDT,
-                                     AENDY,
-                                     params()$settings$bodsys_col,
-                                     AETERM)
-    })
-
-    observe({
-        print(aes_sub())
+                                     params()$settings$dm$siteid_col,
+                                     params()$settings$aes$trarm_col,
+                                     params()$settings$aes$stdy_col,
+                                     params()$settings$aes$endy_col,
+                                     params()$settings$aes$bodsys_col,
+                                     params()$settings$aes$aeterm_col)
     })
 
     ## Update ID Select
@@ -78,27 +74,19 @@ profile_server <- function(input, output, session, params) {
 
 
 
-    # domainTable <- observeEvent({
-    #    .data %>% filter(!!sym(id_col()) == input$idSelect)
-    # })
-
-    ## Show data for the selected
-    # params()$data %>% map(domainTable())
-    # params()$data %>% map(., filter(!!sym(id_col()) == input$idSelect))
     # TODO Make this dynamic for any domain provided (use a sub-module?)
     output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == input$idSelect)})
 
-    # output$aeListing <- renderDT({params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)})
-    # output$labListing <- renderDT({params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)})
-    # output$dmListing <- renderDT({params()$data$dm %>% filter(!!sym(id_col()) == input$idSelect)})
-
     output$AEplot <- renderPlot({
         AEplot(
-            data=params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)
+            data=params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect),
+            paramVar = !!sym(params()$settings$aes$aeterm_col),
+            aeStartVar= !!sym(params()$settings$aes$stdy_col),
+            aeEndVar=!!sym(params()$settings$aes$endy_col),
+            colorVar=!!sym(params()$settings$aes$severity_col)
         )
     })
     output$AEtable <- renderDT({
-            # params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)
         aes_sub() %>% filter(!!sym(id_col()) == input$idSelect)
     })
 
