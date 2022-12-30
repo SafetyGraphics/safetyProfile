@@ -13,36 +13,55 @@
 
 profile_ui <- function(id) {
     ns <- NS(id)
-    
+
     ## bring components together as complete ui
     ui <- fluidPage(
         selectizeInput(
             ns("idSelect"),
             label="Select Participant",
-            choices=c()       
-        ),  
+            choices=c()
+        ),
+
         # TODO Make this dynamic for any domain provided (use a sub-module?)
         tabsetPanel(id=ns("tableWrap"), type = "tabs",
-            tabPanel("AEs", 
-                div(
-                    h5("AE"),
-                    DTOutput(ns("aeListing")))
-                ),
-            tabPanel("Labs", 
-                div(
-                    h5(htmlOutput(ns("Lab Listing"))),
-                    DTOutput(ns("labListing"))
-                ),
+            tabPanel("Overview",
+                     div(
+                         selectizeInput(
+                             ns("domainSelect"),
+                             label="Select Data Domain",
+                             choices=c()
+                         ),
+                         # h5(""),
+                         DTOutput(ns("overview")))
             ),
-            tabPanel("DM", 
-                div(
-                    h5(htmlOutput(ns("DM Listing"))),
-                    DTOutput(ns("dmListing"))
-                ),
+            # tabPanel("AEs",
+            #     div(
+            #         h5("AE"),
+            #         DTOutput(ns("aeListing")))
+            #     ),
+            # tabPanel("Labs",
+            #     div(
+            #         h5(htmlOutput(ns("Lab Listing"))),
+            #         DTOutput(ns("labListing"))
+            #     ),
+            # ),
+            # tabPanel("DM",
+            #     div(
+            #         h5(htmlOutput(ns("DM Listing"))),
+            #         DTOutput(ns("dmListing"))
+            #     ),
+            # ),
+            tabPanel("Plot",
+                 div(
+                     h5(htmlOutput(ns("Plot"))),
+                     plotOutput(ns("AEplot")),
+                     DTOutput(ns("AEtable"))
+                 ),
+                )
             )
-        )  
-    )
-    
+        )
+    # )
+
     return(ui)
 }
 

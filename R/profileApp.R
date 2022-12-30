@@ -10,23 +10,23 @@
 
 profileApp <- function(
     data = list(
-        aes=safetyData::adam_adae, 
-        dm = safetyData::adam_adsl, 
+        aes=safetyData::adam_adae,
+        dm = safetyData::adam_adsl,
         labs=safetyData::adam_adlbc
-    ), 
+    ),
     settings=NULL,
     runNow=TRUE
 ){
-    
+
     ## create default settings when settings is not defined by default
-    if(is.null(settings)){      
+    if(is.null(settings)){
         settings<-list(
             labs=list(id_col="USUBJID"),
             aes=list(id_col="USUBJID", bodsys_col="AEBODSYS", term_col = 'AEDECOD'),
             dm=list(id_col="USUBJID", treatment_col="ARM")
         )
     }
-    
+
     ## create object containing data and setting to pass to server
     params <- reactive({
         list(
@@ -34,7 +34,7 @@ profileApp <- function(
             settings=settings
         )
     })
-    
+
     ## Create app with ui and server
     app <- shinyApp(
         ui =  profile_ui("profile"),

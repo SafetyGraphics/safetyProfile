@@ -8,6 +8,8 @@
 #' @return returns shiny module Server function
 #'
 #' @import shiny
+#' @import ggplot2
+#' @import dplyr
 #' @importFrom DT renderDT
 #' @importFrom purrr map
 #' @importFrom dplyr filter
@@ -30,6 +32,27 @@ profile_server <- function(input, output, session, params) {
         unique(params()$data$dm[[id_col()]])
     })
 
+    domain <- reactive({
+        req(params()$data)
+        names(params()$data)
+    })
+
+    domain_choice<-reactive({
+        req(params()$data)
+        req(input$domainSelect)
+
+        params()$data[[input$domainSelect]]
+    })
+
+    aes_sub <-  reactive({
+        req(params()$data$aes)
+        params()$data$aes %>% select(USUBJID, SITEID, TRTA, AENDT, AENDY, AEBODSYS)
+    })
+
+    observe({
+        print(aes_sub())
+    })
+
     ## Update ID Select
     observe({
         updateSelectizeInput(
@@ -39,11 +62,38 @@ profile_server <- function(input, output, session, params) {
             #selected = current
         )
     })
+    observe({
+        updateSelectizeInput(
+            session,
+            inputId = 'domainSelect',
+            choices = domain()
+        )
+    })
 
+
+
+    # domainTable <- observeEvent({
+    #    .data %>% filter(!!sym(id_col()) == input$idSelect)
+    # })
 
     ## Show data for the selected
+    # params()$data %>% map(domainTable())
+    # params()$data %>% map(., filter(!!sym(id_col()) == input$idSelect))
     # TODO Make this dynamic for any domain provided (use a sub-module?)
-    output$aeListing <- renderDT({params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)})
-    output$labListing <- renderDT({params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)})
-    output$dmListing <- renderDT({params()$data$dm %>% filter(!!sym(id_col()) == input$idSelect)})
+    output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == input$idSelect)})
+
+    # output$aeListing <- renderDT({params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)})
+    # output$labListing <- renderDT({params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)})
+    # output$dmListing <- renderDT({params()$data$dm %>% filter(!!sym(id_col()) == input$idSelect)})
+
+    output$AEplot <- renderPlot({
+        AEplot(
+            data=params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)
+        )
+    })
+    output$AEtable <- renderDT({
+            # params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)
+        aes_sub() %>% filter(!!sym(id_col()) == input$idSelect)
+    })
+
 }
