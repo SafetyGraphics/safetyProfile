@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' AEplot(
-#'     data=safetyData::adam_adae
+#'     data=safetyData::adam_adae,
 #'     paramVar = "AETERM",
 #'     aeStartVar= "ASTDY",
 #'     aeEndVar="AENDY",
@@ -27,7 +27,7 @@ AEplot <- function(data, paramVar, aeStartVar, aeEndVar, colorVar, ...) {
     scale_colour_brewer(palette = "Pastel1")+
     xlab("Study Day Start/End of AE")+
     ylab("") +
-    scale_x_continuous(limits=c(0,max(na.omit(data$AENDY)))) +
+    scale_x_continuous(limits=c(min(na.omit(data$ASTDY)),max(na.omit(data$AENDY)))) +
     theme_bw()
   p + theme(legend.position="none")
 

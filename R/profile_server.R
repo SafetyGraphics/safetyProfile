@@ -81,10 +81,11 @@ profile_server <- function(input, output, session, params) {
         AEplot(
             data=params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect),
             paramVar = !!sym(params()$settings$aes$aeterm_col),
-            aeStartVar= !!sym(params()$settings$aes$stdy_col),
-            aeEndVar=!!sym(params()$settings$aes$endy_col),
-            colorVar=!!sym(params()$settings$aes$severity_col)
+            aeStartVar = !!sym(params()$settings$aes$stdy_col),
+            aeEndVar = !!sym(params()$settings$aes$endy_col),
+            colorVar = !!sym(params()$settings$aes$severity_col)
         )
+
     })
     output$AEtable <- renderDT({
         aes_sub() %>% filter(!!sym(id_col()) == input$idSelect)
