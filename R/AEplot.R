@@ -32,6 +32,7 @@ AEplot <- function(data, paramVar, aeStartVar, aeEndVar, colorVar) {
                      y=.data[[paramVar]],
                      yend=.data[[paramVar]],
                      color=.data[[colorVar]]), linetype=1, size=2) +
+    geom_point(x=data[[aeStartVar]], y=data[[paramVar]]) +
     scale_colour_brewer(palette = "Pastel1")+
     xlab("Study Day Start/End of AE")+
     ylab("") +
