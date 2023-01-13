@@ -1,53 +1,58 @@
 #' Safety Profile App
 #'
-#' @param dfAE AE Data
-#' @param dfDemog demog data
-#' @param settings safetyGraphics settings
+#' @param data `list` Named list of data domains
+#' @param settings `list` Named list of data mappings
+#' @param standard `character` Name of data standard
+#' @param runNow `logical` Run app?
 #'
-#' @import shiny
+#' @return `shiny.appobj` Shiny app
+#'
+#' @importFrom shiny shinyApp callModule
 #'
 #' @export
 
 profileApp <- function(
-    data = list(
-        aes=safetyData::adam_adae,
-        dm = safetyData::adam_adsl,
-        labs=safetyData::adam_adlbc
-    ),
-    settings=NULL,
-    runNow=TRUE
-){
+    data = NULL,
+    settings = NULL,
+    standard = 'adam',
+    runNow = TRUE
+) {
+    stopifnot(
+        '[ standard ] must be a character-classed variable.' =
+            class(standard) == 'character',
+        '[ standard ] must be one of "sdtm", "adam", "custom".' =
+            tolower(standard) %in% c('sdtm', 'adam', 'custom')
+    )
 
-    ## create default settings when settings is not defined by default
-    if(is.null(settings)){
-        settings<-list(
-            labs=list(id_col="USUBJID"),
-            aes=list(id_col="USUBJID", siteid_col="SITEID", trarm_col="TRTA",
-                     bodsys_col="AEBODSYS", term_col = 'AEDECOD',
-                     aeterm_col="AETERM", severity_col="AESEV",
-                     stdy_col="ASTDY", endy_col="AENDY"),
-            dm=list(id_col="USUBJID", treatment_col="ARM")
-        )
-    }
+    standard <- tolower(standard)
 
-    ## create object containing data and setting to pass to server
+    ## create list of default data when undefined
+    if (is.null(data))
+        data <- getDefaultData(standard)
+
+    ## create list of default settings when undefined
+    if (is.null(settings))
+        settings <- getDefaultSettings(standard)
+browser()
+    ## create reactive list of data and settings to pass to server
     params <- reactive({
         list(
-            data=data,
-            settings=settings
+            data = data,
+            settings = settings,
+            standard = standard
         )
     })
 
-    ## Create app with ui and server
+    ## Create app with UI and server
     app <- shinyApp(
         ui =  profile_ui("profile"),
-        server = function(input,output,session){
+        server = function(input,output,session) {
             callModule(profile_server, "profile", params)
         }
     )
 
-    #if(runNow)
+    if (runNow)
         runApp(app)
-    #else
-    #app
+    else
+        app
 }

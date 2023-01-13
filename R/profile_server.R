@@ -23,7 +23,6 @@ profile_server <- function(input, output, session, params) {
 
     ## set up some basic reactives for convenience
     id_col<-reactive({
-
         params()$settings$dm$id_col
     })
 
@@ -78,9 +77,7 @@ profile_server <- function(input, output, session, params) {
         print(params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect))# %in% input$idSelect])
     })
 
-
-
-    # TODO Make this dynamic for any domain provided (use a sub-module?)
+    # TODO: Make this dynamic for any domain provided (use a sub-module?)
     output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == input$idSelect)})
 
     output$AEplot <- renderPlot({
