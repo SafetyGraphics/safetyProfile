@@ -12,7 +12,7 @@ profileApp <- function(
     data = list(
         aes=safetyData::adam_adae,
         dm = safetyData::adam_adsl,
-        labs=safetyData::adam_adlbc
+        labs=safetyData::adam_adlbc %>% filter(PARAMCD %in% c('PHOS', 'GLUC', 'PROT'))
     ),
     settings=NULL,
     runNow=TRUE
@@ -21,7 +21,8 @@ profileApp <- function(
     ## create default settings when settings is not defined by default
     if(is.null(settings)){
         settings<-list(
-            labs=list(id_col="USUBJID"),
+            labs=list(id_col="USUBJID", trarm_col="TRTA",
+                      term_col='PARAM', aval_col="AVAL", stdy_col="ADY"),
             aes=list(id_col="USUBJID", siteid_col="SITEID", trarm_col="TRTA",
                      bodsys_col="AEBODSYS", term_col = 'AEDECOD',
                      aeterm_col="AETERM", severity_col="AESEV",
