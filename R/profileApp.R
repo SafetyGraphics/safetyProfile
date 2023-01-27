@@ -26,7 +26,7 @@ profileApp <- function(
                      bodsys_col="AEBODSYS", term_col = 'AEDECOD',
                      aeterm_col="AETERM", severity_col="AESEV",
                      stdy_col="ASTDY", endy_col="AENDY"),
-            dm=list(id_col="USUBJID", treatment_col="ARM")
+            dm=list(id_col="USUBJID", treatment_col="ARM", sex_col="SEX",race_col="RACE", age_col="AGE")
         )
     }
 
