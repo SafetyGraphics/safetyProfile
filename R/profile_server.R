@@ -32,6 +32,17 @@ profile_server <- function(input, output, session, params) {
     })
 
 
+    labs_sub <-  reactive({
+      req(params()$data$labs)
+      labs_dat <- params()$settings$labs
+      params()$data$labs %>% select(labs_dat$id_col,
+                                   labs_dat$siteid_col,
+                                   labs_dat$trarm_col,
+                                   labs_dat$term_col,
+                                   labs_dat$stdy_col,
+                                   labs_dat$aval_col)
+    })
+
     ## Update ID Select
     observe({
         updateSelectizeInput(
@@ -79,6 +90,24 @@ profile_server <- function(input, output, session, params) {
 
     output$AEtable <- renderDT({
         aes_sub() %>% filter(!!sym(id_col()) == input$idSelect)
+    })
+
+
+    # TODO Make this dynamic for any domain provided (use a sub-module?)
+    output$safety_lineplot <- renderPlot({
+      if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)) == 0){
+        safety_lineplot(
+          data=params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect),
+          paramVar = params()$settings$labs$term_col,
+          adyVar = params()$settings$labs$stdy_col,
+          avalVar = params()$settings$labs$aval_col
+        )}else{
+          showNotification("There are no Laboratories for this subject", type = "warning")
+        }
+
+    })
+    output$LBtable <- renderDT({
+      labs_sub() %>% filter(!!sym(id_col()) == input$idSelect)
     })
 }
 
