@@ -4,8 +4,8 @@ getDefaultSettings <- function(standard) {
     if (standard == 'sdtm') {
         settings$aes <- list(
             id_col = "USUBJID",
-            stdt_col = "AESTDT",
-            endt_col = "AEENDT",
+            stdt_col = "AESTDTC",
+            endt_col = "AEENDTC",
             stdy_col = NULL,
             endy_col = NULL,
             aeterm_col = "AETERM",
@@ -24,7 +24,7 @@ getDefaultSettings <- function(standard) {
             id_col = "USUBJID",
             visit_col = 'VISIT',
             visit_order_col = 'VISITNUM',
-            dt_col = 'LBDT',
+            dt_col = 'LBDTC',
             dy_col = NULL,
             result_col = 'LBSTRESN'
         )
@@ -33,12 +33,12 @@ getDefaultSettings <- function(standard) {
     if (standard == 'adam') {
         settings$aes <- list(
             id_col = "USUBJID",
-            stdt_col = NULL,
-            endt_col = NULL,
+            stdt_col = 'ASTDT',
+            endt_col = 'AENDT',
             stdy_col = "ASTDY",
             endy_col = "AENDY",
             aeterm_col = "AETERM",
-            term_col = 'AEDECOD',
+            decod_col = 'AEDECOD',
             bodsys_col = "AEBODSYS",
             severity_col = "AESEV"
         )

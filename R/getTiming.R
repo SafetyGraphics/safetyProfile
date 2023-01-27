@@ -17,44 +17,43 @@ getTiming <- function(
 ) {
     # TODO: add stopifnot() logic
 
-    id_col <- reactive({
-        params()$settings[[ refDomain ]]$id_col
-    })
+    id_col <- params$settings[[ refDomain ]]$id_col
 
-    ref_data <- params()$data[[ refDomain ]] %>%
+    ref_data <- params$data[[ refDomain ]] %>%
         select(
             id_col, refDate
         ) %>%
         mutate(
-            refDate = as.Date(.data$refDate)
+            # TODO: add logic around date format... lubridate::ymd?
+            refDate = as.Date(.data[[ refDate ]])
         )
 
-    domain_data <- params()$data[[ domain ]] %>%
+    domain_data <- params$data[[ domain ]] %>%
         left_join(
             ref_data,
             id_col
         )
 
-    if (!is.null(domainDate)) {
-        domain_date[[ domainDate ]] <- as.Date(domain_data[[ domainDate ]])
+    getStudyDay <- function(data, date_col) {
+        data[[ date_col ]] <- as.Date(data[[ date_col ]])
 
-        domain_data[[ paste0(domainDate, '_dy') ]] <- as.numeric(domain_data[[ domainDate ]] -
-            ref_data[[ refDate ]]) + (domain_data[[ domainDate ]] >= ref_data[[ refDate ]])
+        data[[ paste0(date_col, '_dy') ]] <- as.numeric(
+            data[[ date_col ]] - data$refDate
+        ) + (
+            data[[ date_col ]] >= data$refDate
+        )
+
+        data
     }
 
-    if (!is.null(domainStartDate)) {
-        domain_date[[ domainStartDate ]] <- as.Date(domain_data[[ domainStartDate ]])
+    if (!is.null(domainDate))
+        domain_data <- getStudyDay(domain_data, domainDate)
 
-        domain_data[[ paste0(domainDate, '_stdy') ]] <- as.numeric(domain_data[[ domainStartDate ]] -
-            ref_data[[ refDate ]]) + (domain_data[[ domainStartDate ]] >= ref_data[[ refDate ]])
-    }
+    if (!is.null(domainStartDate))
+        domain_data <- getStudyDay(domain_data, domainStartDate)
 
-    if (!is.null(domainEndDate)) {
-        domain_date[[ domainEndDate ]] <- as.Date(domain_data[[ domainEndDate ]])
-
-        domain_data[[ paste0(domainDate, '_endy') ]] <- as.numeric(domain_data[[ domainEndDate ]] -
-            ref_data[[ refDate ]]) + (domain_data[[ domainEndDate ]] >= ref_data[[ refDate ]])
-    }
+    if (!is.null(domainEndDate))
+        domain_data <- getStudyDay(domain_data, domainEndDate)
 
     domain_data
 }
