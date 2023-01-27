@@ -39,7 +39,14 @@ profile_ui <- function(id) {
                      plotOutput(ns("AEplot")),
                      DTOutput(ns("AEtable"))
                  ),
-                )
+                ),
+            tabPanel("LB Plot",
+                     div(
+                       h5(htmlOutput(ns("LB Plot"))),
+                       plotOutput(ns("safety_lineplot")),
+                       DTOutput(ns("LBtable"))
+                     ),
+            )
             )
         )
     # )
