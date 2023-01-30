@@ -41,7 +41,7 @@ profile_ui <- function(id) {
             )
         )
     )
-)
+
 
 
     return(ui)

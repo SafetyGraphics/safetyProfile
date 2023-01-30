@@ -28,8 +28,8 @@ safety_lineplot <- function(data, paramVar, adyVar, avalVar) {
 
   p <- ggplot(data) +
 
-    geom_point(aes(x=data[[adyVar]], y=data[[avalVar]])) +
-    geom_line(aes(x=data[[adyVar]], y=data[[avalVar]])) +
+    geom_point(aes(x=.data[[adyVar]], y=.data[[avalVar]])) +
+    geom_line(aes(x=.data[[adyVar]], y=.data[[avalVar]])) +
 
     facet_wrap(~ data[[paramVar]],
                ncol = 1,

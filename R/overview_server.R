@@ -3,7 +3,9 @@
 #' @param input Shiny input object
 #' @param output  Shiny output object
 #' @param session Shiny session object
-#' 
+#'
+#' @import purrr
+#'
 #' @return A reactive containing the selected column
 #'
 #' @export
@@ -46,7 +48,7 @@ OverviewServer <- function(input, output, session, params, id){
 
     output$demogList <- renderUI({demogHTML()})
 
-    # Render table for selected domain/ID 
+    # Render table for selected domain/ID
     id_col<-reactive({
         params()$settings$dm$id_col
     })
