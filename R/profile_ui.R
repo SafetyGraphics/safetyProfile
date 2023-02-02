@@ -25,12 +25,12 @@ profile_ui <- function(id) {
         # TODO Make this dynamic for any domain provided (use a sub-module?)
         tabsetPanel(id=ns("tableWrap"), type = "tabs",
             tabPanel("Overview",OverviewUI(ns("overview"))),
-            tabPanel("AE Plot",
-                 div(
-                     h5(htmlOutput(ns("AE Plot"))),
-                     plotOutput(ns("AEplot")),
-                     DTOutput(ns("AEtable"))
-                 ),
+            tabPanel("AE Plot", ae_plot_UI(ns("ae_plot"))
+                 # div(
+                 #     h5(htmlOutput(ns("AE Plot"))),
+                 #     plotOutput(ns("AEplot")),
+                 #     DTOutput(ns("AEtable"))
+                 # ),
             ),
             tabPanel("LB Plot",
                   div(
