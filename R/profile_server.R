@@ -17,7 +17,11 @@
 #' @importFrom rlang sym !!
 #' @export
 
-profile_server <- function(input, output, session, params) {
+# profile_server <- function(input, output, session, params) {
+
+profile_server <-  function(id, params) {
+
+    moduleServer(id, function(input, output, session){
     ns <- session$ns
     cat('starting server')
 
@@ -45,10 +49,13 @@ profile_server <- function(input, output, session, params) {
     })
 
     ## Overview Module
-    callModule(OverviewServer, "overview", params, current_id)
-    callModule(ae_plot_server, "ae_plot", params, current_id)
-    callModule(safety_lineplot_server, "safety_line_plot", params, current_id)
-
+    # callModule(OverviewServer, "overview", params, current_id)
+    # callModule(ae_plot_server, "ae_plot", params, current_id)
+    ae_plot_server("ae_plot", params, current_id)
+    safety_lineplot_server("safety_line_plot", params, current_id)
+    OverviewServer("overview", params, current_id)
+    # callModule(safety_lineplot_server, "safety_line_plot", params, current_id)
+})
 
 }
 

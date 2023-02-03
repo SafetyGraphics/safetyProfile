@@ -9,7 +9,10 @@
 #'
 #' @return Reactive containing AE plot and listing
 #'
-ae_plot_server <-  function(input, output, session, params, id){
+
+ae_plot_server <-  function(id, params, current_id) {
+
+  moduleServer(id, function(input, output, session){
   ns <- session$ns
 
   ## set up some basic reactives for convenience
@@ -34,9 +37,9 @@ ae_plot_server <-  function(input, output, session, params, id){
   })
 
   output$AEplot <- renderPlot({
-    if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == id())) == 0){
+    if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == current_id())) == 0){
       AEplot(
-        data=params()$data$aes %>% filter(!!sym(id_col()) == id()),
+        data=params()$data$aes %>% filter(!!sym(id_col()) == current_id()),
         paramVar = params()$settings$aes$aeterm_col,
         aeStartVar = params()$settings$aes$stdy_col,
         aeEndVar = params()$settings$aes$endy_col,
@@ -47,6 +50,7 @@ ae_plot_server <-  function(input, output, session, params, id){
   })
 
   output$AEtable <- renderDT({
-    aes_sub() %>% filter(!!sym(id_col()) == id())
+    aes_sub() %>% filter(!!sym(id_col()) == current_id())
+  })
   })
 }

@@ -9,7 +9,10 @@
 #'
 #' @return Reactive containing AE plot and listing
 #'
-safety_lineplot_server <-  function(input, output, session, params, id){
+
+safety_lineplot_server <-  function(id, params, current_id) {
+
+  moduleServer(id, function(input, output, session){
   ns <- session$ns
 
   ## set up some basic reactives for convenience
@@ -30,9 +33,9 @@ safety_lineplot_server <-  function(input, output, session, params, id){
 
   # TODO Make this dynamic for any domain provided (use a sub-module?)
   output$safety_lineplot <- renderPlot({
-    if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == id())) == 0){
+    if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == current_id())) == 0){
       safety_lineplot(
-        data=params()$data$labs %>% filter(!!sym(id_col()) == id()),
+        data=params()$data$labs %>% filter(!!sym(id_col()) == current_id()),
         paramVar = params()$settings$labs$term_col,
         adyVar = params()$settings$labs$stdy_col,
         avalVar = params()$settings$labs$aval_col
@@ -42,7 +45,9 @@ safety_lineplot_server <-  function(input, output, session, params, id){
 
   })
   output$LBtable <- renderDT({
-    labs_sub() %>% filter(!!sym(id_col()) == id())
+    labs_sub() %>% filter(!!sym(id_col()) == current_id())
+  })
+
   })
 
 }

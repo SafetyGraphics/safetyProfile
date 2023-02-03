@@ -43,7 +43,7 @@ profileApp <- function(
     app <- shinyApp(
         ui =  profile_ui("profile"),
         server = function(input,output,session){
-            callModule(profile_server, "profile", params)
+            profile_server("profile", params)
         }
     )
 
