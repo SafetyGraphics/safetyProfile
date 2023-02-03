@@ -26,11 +26,6 @@ profile_ui <- function(id) {
         tabsetPanel(id=ns("tableWrap"), type = "tabs",
             tabPanel("Overview",OverviewUI(ns("overview"))),
             tabPanel("AE Plot", ae_plot_UI(ns("ae_plot"))
-                 # div(
-                 #     h5(htmlOutput(ns("AE Plot"))),
-                 #     plotOutput(ns("AEplot")),
-                 #     DTOutput(ns("AEtable"))
-                 # ),
             ),
             tabPanel("LB Plot",
                   div(

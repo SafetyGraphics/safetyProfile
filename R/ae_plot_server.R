@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param input Shiny input object
+#' @param output Shiny output object
+#' @param session Shiny session object
+#' @param params parameters object with `data` and `settings` options.
+#' @param id Shiny output object
+#'
+#'
+#' @return Reactive containing AE plot and listing
+#'
 ae_plot_server <-  function(input, output, session, params, id){
   ns <- session$ns
 
@@ -5,12 +16,6 @@ ae_plot_server <-  function(input, output, session, params, id){
   id_col<-reactive({
     params()$settings$dm$id_col
   })
-  #
-  # ids <- reactive({
-  #   req(params()$data$dm)
-  #   unique(params()$data$dm[[id_col()]])
-  # })
-
 
   ## AE Stuff (to be moved to module)
   aes_sub <-  reactive({
@@ -27,21 +32,6 @@ ae_plot_server <-  function(input, output, session, params, id){
       aes_dat$severity_col
     )
   })
-
-  # ## Update ID Select
-  # observe({
-  #   updateSelectizeInput(
-  #     session,
-  #     inputId = 'idSelect',
-  #     choices = ids()
-  #   )
-  # })
-  #
-  # current_id <-  reactive({
-  #   input$idSelect
-  # })
-
-
 
   output$AEplot <- renderPlot({
     if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == id())) == 0){
