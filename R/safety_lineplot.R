@@ -1,4 +1,4 @@
-#' Create AEplot
+#' Create safety line plot
 #'
 #' @param data long data frame such as LB or VS
 #' @param paramVar term column

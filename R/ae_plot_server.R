@@ -1,4 +1,4 @@
-#' Title
+#' AE Plot Module - Server
 #'
 #' @param input Shiny input object
 #' @param output Shiny output object
