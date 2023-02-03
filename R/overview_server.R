@@ -3,6 +3,9 @@
 #' @param input Shiny input object
 #' @param output  Shiny output object
 #' @param session Shiny session object
+#' @param params parameters object with `data` and `settings` options.
+#' @param id Shiny module id
+#' @param current_id current selected id
 #'
 #' @import purrr
 #'

@@ -10,7 +10,7 @@ safety_lineplot_UI(id)
 \item{id}{module id}
 }
 \value{
-AE plot tab UI
+LB plot tab UI
 }
 \description{
 UI that facilitates the Safety line plot tab that includes safety line plot and corresponding table outputs

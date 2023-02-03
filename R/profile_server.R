@@ -4,6 +4,7 @@
 #' @param output module output
 #' @param session module session
 #' @param params parameters object with `data` and `settings` options.
+#' @param id Shiny module id
 #'
 #' @return returns shiny module Server function
 #'
@@ -17,7 +18,6 @@
 #' @importFrom rlang sym !!
 #' @export
 
-# profile_server <- function(input, output, session, params) {
 
 profile_server <-  function(id, params) {
 
@@ -48,13 +48,10 @@ profile_server <-  function(id, params) {
         input$idSelect
     })
 
-    ## Overview Module
-    # callModule(OverviewServer, "overview", params, current_id)
-    # callModule(ae_plot_server, "ae_plot", params, current_id)
+    ## Call  Modules
     ae_plot_server("ae_plot", params, current_id)
     safety_lineplot_server("safety_line_plot", params, current_id)
     OverviewServer("overview", params, current_id)
-    # callModule(safety_lineplot_server, "safety_line_plot", params, current_id)
 })
 
 }

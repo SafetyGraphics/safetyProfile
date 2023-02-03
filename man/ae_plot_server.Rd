@@ -4,18 +4,20 @@
 \alias{ae_plot_server}
 \title{AE Plot Module - Server}
 \usage{
-ae_plot_server(input, output, session, params, id)
+ae_plot_server(id, params, current_id)
 }
 \arguments{
+\item{id}{Shiny module id}
+
+\item{params}{parameters object with \code{data} and \code{settings} options.}
+
+\item{current_id}{current selected id}
+
 \item{input}{Shiny input object}
 
 \item{output}{Shiny output object}
 
 \item{session}{Shiny session object}
-
-\item{params}{parameters object with \code{data} and \code{settings} options.}
-
-\item{id}{Shiny output object}
 }
 \value{
 Reactive containing AE plot and listing
