@@ -3,8 +3,9 @@
 #' @param input module input
 #' @param output module output
 #' @param session module session
-#' @param params parameters object with `data` and `settings` options.
 #' @param id Shiny module id
+#' @param params parameters object with `data` and `settings` options. {reactive}
+#' @param ptid ID to select when module is initialized
 #'
 #' @return returns shiny module Server function
 #'
@@ -19,7 +20,7 @@
 #' @export
 
 
-profile_server <-  function(id, params) {
+profile_server <-  function(id, params, ptid=NULL) {
 
     moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -40,7 +41,8 @@ profile_server <-  function(id, params) {
         updateSelectizeInput(
             session,
             inputId = 'idSelect',
-            choices = ids()
+            choices = ids(),
+            selected= ptid
         )
     })
 
@@ -52,6 +54,8 @@ profile_server <-  function(id, params) {
     ae_plot_server("ae_plot", params, current_id)
     safety_lineplot_server("safety_line_plot", params, current_id)
     OverviewServer("overview", params, current_id)
+
+    return(current_id)
 })
 
 }
