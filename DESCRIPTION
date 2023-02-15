@@ -9,7 +9,7 @@ Authors@R: c(
 	person("Natalia","Andriychuk", role="aut"),
 	person("Spencer","Childress", role="aut"),
     person("Stephanie","Lussier", role="aut"))
-Description: Interactive Patient Profile for monitoring clinical trial safety. Build to be compatible with the safetyGraphics Shiny App. 
+Description: Interactive patient profile for monitoring clinical trial safety. Allows users to look across multiple data domains and investigate trends for any participant in a clinical trial. This tool provides a stand-along shiny application (profileApp) and a flexible shiny modules allowing this tool to be used as a part of more robust safety monitoring framework like the Shiny app from the safetyGraphics R package. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
