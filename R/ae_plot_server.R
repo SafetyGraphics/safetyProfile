@@ -38,7 +38,6 @@ ae_plot_server <-  function(id, params, current_id) {
   })
 
   output$AEplot <- renderPlot({
-      print(params()$settings$aes)
     if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == current_id())) == 0){
       AEplot(
         data=params()$data$aes %>% filter(!!sym(id_col()) == current_id()),

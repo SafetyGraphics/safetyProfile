@@ -21,13 +21,29 @@ profileApp <- function(
     ## create default settings when settings is not defined by default
     if(is.null(settings)){
         settings<-list(
-            labs=list(id_col="USUBJID", trarm_col="TRTA",
-                      term_col='PARAM', aval_col="AVAL", stdy_col="ADY"),
-            aes=list(id_col="USUBJID", siteid_col="SITEID", trarm_col="TRTA",
-                     bodsys_col="AEBODSYS", term_col = 'AEDECOD',
-                     term_col="AETERM", severity_col="AESEV",
-                     stdy_col="ASTDY", endy_col="AENDY"),
-            dm=list(id_col="USUBJID", treatment_col="ARM", sex_col="SEX",race_col="RACE", age_col="AGE")
+            labs=list(
+                id_col="USUBJID",
+                measure_col='PARAM', 
+                value_col="AVAL", 
+                studyday_col="ADY"
+            ),
+            aes=list(
+                id_col="USUBJID", 
+                siteid_col="SITEID", 
+                bodsys_col="AEBODSYS", 
+                term_col = 'AEDECOD',
+                term_col="AETERM", 
+                severity_col="AESEV",
+                stdy_col="ASTDY", 
+                endy_col="AENDY"
+            ),
+            dm=list(
+                id_col="USUBJID", 
+                treatment_col="ARM", 
+                sex_col="SEX",
+                race_col="RACE", 
+                age_col="AGE"
+            )
         )
     }
 

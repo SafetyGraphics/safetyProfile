@@ -24,12 +24,12 @@ safety_lineplot_server <-  function(id, params, current_id) {
   labs_sub <-  reactive({
     req(params()$data$labs)
     labs_dat <- params()$settings$labs
-    params()$data$labs %>% select(labs_dat$id_col,
-                                  labs_dat$siteid_col,
-                                  labs_dat$trarm_col,
-                                  labs_dat$term_col,
-                                  labs_dat$stdy_col,
-                                  labs_dat$aval_col)
+    params()$data$labs %>% select(
+      labs_dat$id_col,
+      labs_dat$studyday_col,
+      labs_dat$measure_col,
+      labs_dat$value_col
+    )
   })
 
   # TODO Make this dynamic for any domain provided (use a sub-module?)
@@ -37,9 +37,9 @@ safety_lineplot_server <-  function(id, params, current_id) {
     if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == current_id())) == 0){
       safety_lineplot(
         data=params()$data$labs %>% filter(!!sym(id_col()) == current_id()),
-        paramVar = params()$settings$labs$term_col,
-        adyVar = params()$settings$labs$stdy_col,
-        avalVar = params()$settings$labs$aval_col
+        paramVar = params()$settings$labs$measure_col,
+        adyVar = params()$settings$labs$studyday_col,
+        avalVar = params()$settings$labs$value_col
       )}else{
         showNotification("There are no Laboratories for this subject", type = "warning")
       }
