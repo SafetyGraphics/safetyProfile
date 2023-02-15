@@ -32,16 +32,17 @@ ae_plot_server <-  function(id, params, current_id) {
       aes_dat$stdy_col,
       aes_dat$endy_col,
       aes_dat$bodsys_col,
-      aes_dat$aeterm_col,
+      aes_dat$term_col,
       aes_dat$severity_col
     )
   })
 
   output$AEplot <- renderPlot({
+      print(params()$settings$aes)
     if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == current_id())) == 0){
       AEplot(
         data=params()$data$aes %>% filter(!!sym(id_col()) == current_id()),
-        paramVar = params()$settings$aes$aeterm_col,
+        paramVar = params()$settings$aes$term_col,
         aeStartVar = params()$settings$aes$stdy_col,
         aeEndVar = params()$settings$aes$endy_col,
         colorVar = params()$settings$aes$severity_col

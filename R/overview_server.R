@@ -22,7 +22,6 @@ OverviewServer <-  function(id, params, current_id) {
     domains <- reactive({
         req(params()$data)
         names(params()$data)
-        print(names(params()$data))
     })
 
     observe({
@@ -39,8 +38,9 @@ OverviewServer <-  function(id, params, current_id) {
     })
 
     demogHTML <- reactive({
-        names <- names(params()$settings$dm)
-        vals <- list(params()$settings$dm %>% map_chr(~as.character(demogData()[1,.x]))) %>% unlist
+        demogCols <- params()$settings$dm[grep('_col', names(params()$settings$dm))]
+        names <- names(demogCols)
+        vals <- list(demogCols %>% map_chr(~as.character(demogData()[1,.x]))) %>% unlist
         names(vals) <- names
         lis <- vals %>% imap(function(val,name){
             tags$li(
