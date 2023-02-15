@@ -4,16 +4,18 @@
 \alias{profile_server}
 \title{Safety Profile Module - Server}
 \usage{
-profile_server(input, output, session, params)
+profile_server(id, params)
 }
 \arguments{
+\item{id}{Shiny module id}
+
+\item{params}{parameters object with \code{data} and \code{settings} options.}
+
 \item{input}{module input}
 
 \item{output}{module output}
 
 \item{session}{module session}
-
-\item{params}{parameters object with \code{data} and \code{settings} options.}
 }
 \value{
 returns shiny module Server function

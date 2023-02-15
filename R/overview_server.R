@@ -3,6 +3,9 @@
 #' @param input Shiny input object
 #' @param output  Shiny output object
 #' @param session Shiny session object
+#' @param params parameters object with `data` and `settings` options.
+#' @param id Shiny module id
+#' @param current_id current selected id
 #'
 #' @import purrr
 #'
@@ -10,7 +13,9 @@
 #'
 #' @export
 
-OverviewServer <- function(input, output, session, params, id){
+OverviewServer <-  function(id, params, current_id) {
+
+    moduleServer(id, function(input, output, session){
     ns <- session$ns
 
     # Populate list of domains in select
@@ -30,7 +35,7 @@ OverviewServer <- function(input, output, session, params, id){
 
     # Make a simple Demographics summary
     demogData <- reactive({
-        params()$data$dm %>% filter(!!sym(id_col()) == id())
+        params()$data$dm %>% filter(!!sym(id_col()) == current_id())
     })
 
     demogHTML <- reactive({
@@ -59,6 +64,8 @@ OverviewServer <- function(input, output, session, params, id){
 
         params()$data[[input$domainSelect]]
     })
-    output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == id())})
+    output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == current_id())})
+
+    })
 
 }

@@ -4,6 +4,7 @@
 #' @param output module output
 #' @param session module session
 #' @param params parameters object with `data` and `settings` options.
+#' @param id Shiny module id
 #'
 #' @return returns shiny module Server function
 #'
@@ -17,7 +18,10 @@
 #' @importFrom rlang sym !!
 #' @export
 
-profile_server <- function(input, output, session, params) {
+
+profile_server <-  function(id, params) {
+
+    moduleServer(id, function(input, output, session){
     ns <- session$ns
     cat('starting server')
 
@@ -31,18 +35,6 @@ profile_server <- function(input, output, session, params) {
         unique(params()$data$dm[[id_col()]])
     })
 
-
-    labs_sub <-  reactive({
-      req(params()$data$labs)
-      labs_dat <- params()$settings$labs
-      params()$data$labs %>% select(labs_dat$id_col,
-                                   labs_dat$siteid_col,
-                                   labs_dat$trarm_col,
-                                   labs_dat$term_col,
-                                   labs_dat$stdy_col,
-                                   labs_dat$aval_col)
-    })
-
     ## Update ID Select
     observe({
         updateSelectizeInput(
@@ -52,62 +44,15 @@ profile_server <- function(input, output, session, params) {
         )
     })
 
-    current_id = reactive({
+    current_id <- reactive({
         input$idSelect
     })
 
-    ## Overview Module
-    callModule(OverviewServer, "overview", params, current_id)
-    
-    ## AE Stuff (to be moved to module)
-    aes_sub <-  reactive({
-        req(params()$data$aes)
-        aes_dat <- params()$settings$aes
-        params()$data$aes %>% select(
-            aes_dat$id_col,
-            aes_dat$siteid_col,
-            aes_dat$trarm_col,
-            aes_dat$stdy_col,
-            aes_dat$endy_col,
-            aes_dat$bodsys_col,
-            aes_dat$aeterm_col,
-            aes_dat$severity_col
-        )
-    })
+    ## Call  Modules
+    ae_plot_server("ae_plot", params, current_id)
+    safety_lineplot_server("safety_line_plot", params, current_id)
+    OverviewServer("overview", params, current_id)
+})
 
-    output$AEplot <- renderPlot({
-        if(!nrow(params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect)) == 0){
-        AEplot(
-            data=params()$data$aes %>% filter(!!sym(id_col()) == input$idSelect),
-            paramVar = params()$settings$aes$aeterm_col,
-            aeStartVar = params()$settings$aes$stdy_col,
-            aeEndVar = params()$settings$aes$endy_col,
-            colorVar = params()$settings$aes$severity_col
-        )}else{
-            showNotification("There are no Adverse Events for this subject", type = "warning")
-        }
-    })
-
-    output$AEtable <- renderDT({
-        aes_sub() %>% filter(!!sym(id_col()) == input$idSelect)
-    })
-
-
-    # TODO Make this dynamic for any domain provided (use a sub-module?)
-    output$safety_lineplot <- renderPlot({
-      if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect)) == 0){
-        safety_lineplot(
-          data=params()$data$labs %>% filter(!!sym(id_col()) == input$idSelect),
-          paramVar = params()$settings$labs$term_col,
-          adyVar = params()$settings$labs$stdy_col,
-          avalVar = params()$settings$labs$aval_col
-        )}else{
-          showNotification("There are no Laboratories for this subject", type = "warning")
-        }
-
-    })
-    output$LBtable <- renderDT({
-      labs_sub() %>% filter(!!sym(id_col()) == input$idSelect)
-    })
 }
 
