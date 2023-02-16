@@ -13,7 +13,7 @@
 
 profile_ui <- function(id) {
     ns <- NS(id)
-
+    
     ## bring components together as complete ui
     ui <- fluidPage(
         selectizeInput(
@@ -32,4 +32,3 @@ profile_ui <- function(id) {
 
     return(ui)
 }
-

@@ -2,7 +2,7 @@
 #'
 #' @param dfAE AE Data
 #' @param dfDemog demog data
-#' @param settings safetyGraphics settings
+#' @param settings safetyGraphics settings 
 #' @param ptid participant ID to select when app is initialized
 #'
 #' @import shiny
@@ -61,7 +61,11 @@ profileApp <- function(
     app <- shinyApp(
         ui =  profile_ui("profile"),
         server = function(input,output,session){
-            id<-profile_server("profile", params=params, ptid=ptid)
+            id<-profile_server(
+                "profile", 
+                params=params, 
+                ptid=reactive({ptid})
+            )
             observe({print(paste0('id=',id()))})
         }
     )
