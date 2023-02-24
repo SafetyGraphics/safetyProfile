@@ -20,36 +20,35 @@
 #' @export
 
 
-profile_server <-  function(id, params, ptid=reactive({NULL})) {
-
-    moduleServer(id, function(input, output, session){
+profile_server <- function(id, params, ptid = reactive({
+  NULL
+})) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-    cat('starting server')
+    cat("starting server")
 
     ## set up some basic reactives for convenience
-    id_col<-reactive({
-        params()$settings$dm$id_col
+    id_col <- reactive({
+      params()$settings$dm$id_col
     })
 
     ids <- reactive({
-        req(params()$data$dm)
-        unique(params()$data$dm[[id_col()]])
+      req(params()$data$dm)
+      unique(params()$data$dm[[id_col()]])
     })
 
     ## Update ID Select
     observe({
-        updateSelectizeInput(
-            session,
-            inputId = 'idSelect',
-            choices = ids(),
-            selected= ptid()
-        )
+      updateSelectizeInput(
+        session,
+        inputId = "idSelect",
+        choices = ids(),
+        selected = ptid()
+      )
     })
 
-    
-
     current_id <- reactive({
-        input$idSelect
+      input$idSelect
     })
 
     ## Call  Modules
@@ -58,7 +57,5 @@ profile_server <-  function(id, params, ptid=reactive({NULL})) {
     OverviewServer("overview", params, current_id)
 
     return(current_id)
-})
-
+  })
 }
-

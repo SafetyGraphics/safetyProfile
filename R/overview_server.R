@@ -13,59 +13,60 @@
 #'
 #' @export
 
-OverviewServer <-  function(id, params, current_id) {
-
-    moduleServer(id, function(input, output, session){
+OverviewServer <- function(id, params, current_id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Populate list of domains in select
     domains <- reactive({
-        req(params()$data)
-        names(params()$data)
+      req(params()$data)
+      names(params()$data)
     })
 
     observe({
-        updateSelectizeInput(
-            session,
-            inputId = 'domainSelect',
-            choices = domains()
-        )
+      updateSelectizeInput(
+        session,
+        inputId = "domainSelect",
+        choices = domains()
+      )
     })
 
     # Make a simple Demographics summary
     demogData <- reactive({
-        params()$data$dm %>% filter(!!sym(id_col()) == current_id())
+      params()$data$dm %>% filter(!!sym(id_col()) == current_id())
     })
 
     demogHTML <- reactive({
-        demogCols <- params()$settings$dm[grep('_col', names(params()$settings$dm))]
-        names <- names(demogCols)
-        vals <- list(demogCols %>% map_chr(~as.character(demogData()[1,.x]))) %>% unlist
-        names(vals) <- names
-        lis <- vals %>% imap(function(val,name){
-            tags$li(
-                tags$small(name,class='dlabel'),
-                tags$strong(val,class="dvalue")
-            )
-        })
-        return(tags$ul(lis, class="dlist"))
+      demogCols <- params()$settings$dm[grep("_col", names(params()$settings$dm))]
+      names <- names(demogCols)
+      vals <- list(demogCols %>% map_chr(~ as.character(demogData()[1, .x]))) %>% unlist()
+      names(vals) <- names
+      lis <- vals %>% imap(function(val, name) {
+        tags$li(
+          tags$small(name, class = "dlabel"),
+          tags$strong(val, class = "dvalue")
+        )
+      })
+      return(tags$ul(lis, class = "dlist"))
     })
 
-    output$demogList <- renderUI({demogHTML()})
+    output$demogList <- renderUI({
+      demogHTML()
+    })
 
     # Render table for selected domain/ID
-    id_col<-reactive({
-        params()$settings$dm$id_col
+    id_col <- reactive({
+      params()$settings$dm$id_col
     })
 
-    domain_choice<-reactive({
-        req(params()$data)
-        req(input$domainSelect)
+    domain_choice <- reactive({
+      req(params()$data)
+      req(input$domainSelect)
 
-        params()$data[[input$domainSelect]]
+      params()$data[[input$domainSelect]]
     })
-    output$overview <- renderDT({domain_choice() %>% filter(!!sym(id_col()) == current_id())})
-
+    output$overview <- renderDT({
+      domain_choice() %>% filter(!!sym(id_col()) == current_id())
     })
-
+  })
 }
