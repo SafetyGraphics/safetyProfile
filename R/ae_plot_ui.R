@@ -5,7 +5,7 @@
 #' @return AE plot tab UI
 #'
 #'
-ae_plot_UI <- function(id){
+ae_plot_UI <- function(id) {
   ns <- NS(id)
 
   div(
