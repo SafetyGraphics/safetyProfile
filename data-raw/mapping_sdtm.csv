@@ -1,0 +1,16 @@
+standard,domain,key,value
+sdtm,aes,id_col,USUBJID
+sdtm,aes,stdt_col,AESTDTC
+sdtm,aes,endt_col,AEENDTC
+sdtm,aes,aeterm_col,AETERM
+sdtm,aes,decod_col,AEDECOD
+sdtm,aes,bodsys_col,AEBODSYS
+sdtm,aes,severity_col,AESEV
+sdtm,dm,id_col,USUBJID
+sdtm,dm,reference_date_col,RFSTDTC
+sdtm,dm,treatment_col,ARM
+sdtm,labs,id_col,USUBJID
+sdtm,labs,visit_col,VISIT
+sdtm,labs,visit_order_col,VISITNUM
+sdtm,labs,dt_col,LBDTC
+sdtm,labs,result_col,LBSTRESN
