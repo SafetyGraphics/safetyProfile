@@ -16,10 +16,14 @@ profile_ui <- function(id) {
 
   ## bring components together as complete ui
   ui <- fluidPage(
+    div(
     selectizeInput(
       ns("idSelect"),
       label = "Select Participant",
       choices = c()
+    ),
+    h4("Demographics Summary"),
+    htmlOutput(ns("demogList")),
     ),
 
     # Call Modules

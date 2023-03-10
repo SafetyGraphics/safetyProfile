@@ -13,8 +13,8 @@ OverviewUI <- function(id) {
   ns <- NS(id)
 
   div(
-    h3("Demographics Summary"),
-    htmlOutput(ns("demogList")),
+    # h3("Demographics Summary"),
+    # htmlOutput(ns("demogList")),
     h3("Participant Data Listings"),
     selectizeInput(
       ns("domainSelect"),
