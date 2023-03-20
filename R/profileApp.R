@@ -22,7 +22,9 @@ profileApp <- function(
     if(is.null(settings)){
         settings<-list(
             labs=list(id_col="USUBJID", trarm_col="TRTA",
-                      term_col='PARAM', aval_col="AVAL", stdy_col="ADY"),
+                      term_col='PARAM', aval_col="AVAL", stdy_col="ADY",
+                      lo_col="A1LO", hi_col="A1HI",
+                      base_col="BASE", vis_col="AVISIT"),
             aes=list(id_col="USUBJID", siteid_col="SITEID", trarm_col="TRTA",
                      bodsys_col="AEBODSYS", term_col = 'AEDECOD',
                      aeterm_col="AETERM", severity_col="AESEV",
