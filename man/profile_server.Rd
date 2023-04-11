@@ -4,12 +4,20 @@
 \alias{profile_server}
 \title{Safety Profile Module - Server}
 \usage{
-profile_server(id, params)
+profile_server(
+  id,
+  params,
+  ptid = reactive({
+     NULL
+ })
+)
 }
 \arguments{
 \item{id}{Shiny module id}
 
-\item{params}{parameters object with \code{data} and \code{settings} options.}
+\item{params}{parameters object with \code{data} and \code{settings} options. {reactive}}
+
+\item{ptid}{ID to select when module is initialized {reactive}}
 
 \item{input}{module input}
 

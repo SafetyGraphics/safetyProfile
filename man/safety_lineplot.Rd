@@ -25,12 +25,11 @@ Create safety line plot
 }
 \examples{
 safety_lineplot(
-    data=safetyData::adam_advs,
-    paramVar = "PARAM",
-    adyVar= "ADY",
-    avalVar="AVAL",
-    colorVar="ATPT"
-   )
-
+  data = safetyData::adam_advs,
+  paramVar = "PARAM",
+  adyVar = "ADY",
+  avalVar = "AVAL",
+  colorVar = "ATPT"
+)
 
 }

@@ -13,6 +13,7 @@
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom DT renderDT
+#' @importFrom reactable renderReactable
 #' @importFrom purrr map
 #' @importFrom dplyr filter
 #' @importFrom magrittr %>%
@@ -55,6 +56,7 @@ profile_server <- function(id, params, ptid = reactive({
     ae_plot_server("ae_plot", params, current_id)
     safety_lineplot_server("safety_line_plot", params, current_id)
     OverviewServer("overview", params, current_id)
+    react_server("react", params, current_id)
 
     return(current_id)
   })
