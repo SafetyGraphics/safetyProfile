@@ -13,15 +13,15 @@
 #'
 
 profile_ui <- function(id) {
-    ns <- NS(id)
+  ns <- NS(id)
 
-    ## bring components together as complete ui
-    ui <- fluidPage(
-        selectizeInput(
-            ns("idSelect"),
-            label="Select Participant",
-            choices=c()
-        ),
+  ## bring components together as complete ui
+  ui <- fluidPage(
+    selectizeInput(
+      ns("idSelect"),
+      label = "Select Participant",
+      choices = c()
+    ),
 
         # Call Modules
         tabsetPanel(id=ns("tableWrap"), type = "tabs",
@@ -31,7 +31,7 @@ profile_ui <- function(id) {
             tabPanel("LB Reactable", react_UI(ns("react")))
         )
     )
+  )
 
-    return(ui)
+  return(ui)
 }
-

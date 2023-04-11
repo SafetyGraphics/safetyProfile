@@ -5,12 +5,12 @@
 #' @return LB plot tab UI
 #'
 #'
-safety_lineplot_UI <- function(id){
+safety_lineplot_UI <- function(id) {
   ns <- NS(id)
 
   div(
-       h5(htmlOutput(ns("LB Plot"))),
-       plotOutput(ns("safety_lineplot")),
-       DTOutput(ns("LBtable"))
+    h5(htmlOutput(ns("LB Plot"))),
+    plotOutput(ns("safety_lineplot")),
+    DTOutput(ns("LBtable"))
   )
 }
