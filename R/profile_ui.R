@@ -12,38 +12,24 @@
 #'
 
 profile_ui <- function(id) {
-    ns <- NS(id)
+  ns <- NS(id)
 
-    ## bring components together as complete ui
-    ui <- fluidPage(
-        selectizeInput(
-            ns("idSelect"),
-            label="Select Participant",
-            choices=c()
-        ),
+  ## bring components together as complete ui
+  ui <- fluidPage(
+    selectizeInput(
+      ns("idSelect"),
+      label = "Select Participant",
+      choices = c()
+    ),
 
-        # TODO Make this dynamic for any domain provided (use a sub-module?)
-        tabsetPanel(id=ns("tableWrap"), type = "tabs",
-            tabPanel("Overview",OverviewUI(ns("overview"))),
-            tabPanel("AE Plot",
-                 div(
-                     h5(htmlOutput(ns("AE Plot"))),
-                     plotOutput(ns("AEplot")),
-                     DTOutput(ns("AEtable"))
-                 ),
-            ),
-            tabPanel("LB Plot",
-                  div(
-                       h5(htmlOutput(ns("LB Plot"))),
-                       plotOutput(ns("safety_lineplot")),
-                       DTOutput(ns("LBtable"))
-                  ),
-            )
-        )
+    # Call Modules
+    tabsetPanel(
+      id = ns("tableWrap"), type = "tabs",
+      tabPanel("Overview", OverviewUI(ns("overview"))),
+      tabPanel("AE Plot", ae_plot_UI(ns("ae_plot"))),
+      tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot")))
     )
+  )
 
-
-
-    return(ui)
+  return(ui)
 }
-

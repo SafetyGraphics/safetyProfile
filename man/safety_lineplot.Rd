@@ -2,7 +2,7 @@
 % Please edit documentation in R/safety_lineplot.R
 \name{safety_lineplot}
 \alias{safety_lineplot}
-\title{Create AEplot}
+\title{Create safety line plot}
 \usage{
 safety_lineplot(data, paramVar, adyVar, avalVar)
 }
@@ -21,7 +21,7 @@ safety_lineplot(data, paramVar, adyVar, avalVar)
 an lineplot created with ggplot
 }
 \description{
-Create AEplot
+Create safety line plot
 }
 \examples{
 safety_lineplot(

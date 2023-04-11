@@ -4,9 +4,15 @@
 \alias{OverviewServer}
 \title{Server that facilitates the mapping of a single data element (column or field) with a simple select UI}
 \usage{
-OverviewServer(input, output, session, params, id)
+OverviewServer(id, params, current_id)
 }
 \arguments{
+\item{id}{Shiny module id}
+
+\item{params}{parameters object with \code{data} and \code{settings} options.}
+
+\item{current_id}{current selected id}
+
 \item{input}{Shiny input object}
 
 \item{output}{Shiny output object}
