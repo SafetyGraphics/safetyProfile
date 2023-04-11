@@ -57,7 +57,6 @@ profile_server <- function(id, params, ptid = reactive({
     safety_lineplot_server("safety_line_plot", params, current_id)
     OverviewServer("overview", params, current_id)
     react_server("react", params, current_id)
-})
 
     return(current_id)
   })

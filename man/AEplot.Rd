@@ -25,12 +25,11 @@ Create AEplot
 }
 \examples{
 AEplot(
-    data=safetyData::adam_adae,
-    paramVar = "AETERM",
-    aeStartVar= "ASTDY",
-    aeEndVar="AENDY",
-    colorVar="AENDY"
-   )
-
+  data = safetyData::adam_adae,
+  paramVar = "AETERM",
+  aeStartVar = "ASTDY",
+  aeEndVar = "AENDY",
+  colorVar = "AENDY"
+)
 
 }

@@ -4,7 +4,6 @@
 #' @param paramVar term column
 #' @param visVar analysis visit column
 #' @param adyVar analysis day column
-#' @param baseVar baseline value column
 #' @param avalVar analysis value column
 #' @param lowVar lower limit column
 #' @param highVar upper limit column
@@ -24,17 +23,16 @@
 #'     paramVar = "PARAM",
 #'     visVar = "AVISIT",
 #'     adyVar = "ADY",
-#'     baseVar = "BASE",
 #'     avalVar = "AVAL",
 #'     lowVar = "A1LO",
 #'     highVar = "A1HI"
 #'    )
 #'
 #'
-lb_react <- function(data, paramVar, visVar, adyVar, baseVar, avalVar, lowVar, highVar) {
+lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
 
   p <- data %>%
-    select(Parameter = {{paramVar}}, A1LO = {{lowVar}}, A1HI = {{highVar}}, {{visVar}}, {{adyVar}}, {{baseVar}}, {{avalVar}}) %>%
+    select(Parameter = {{paramVar}}, A1LO = {{lowVar}}, A1HI = {{highVar}}, {{visVar}}, {{adyVar}}, {{avalVar}}) %>%
     nest_by(Parameter, A1LO, A1HI, .key = 'table')  %>%
     rowwise() %>%
     mutate(spk = list(

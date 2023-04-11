@@ -28,10 +28,9 @@ profileApp <- function(
         measure_col = "PARAM",
         value_col = "AVAL",
         studyday_col = "ADY",
-        lo_col="A1LO", 
-        hi_col="A1HI",
-        base_col="BASE", 
-        vis_col="AVISIT"
+        normal_col_low="A1LO", 
+        normal_col_high="A1HI",
+        visit_col="AVISIT"
       ),
       aes = list(
         id_col = "USUBJID",

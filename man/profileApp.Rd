@@ -8,11 +8,14 @@ profileApp(
   data = list(aes = safetyData::adam_adae, dm = safetyData::adam_adsl, labs =
     safetyData::adam_adlbc \%>\% filter(PARAMCD \%in\% c("PHOS", "GLUC", "PROT"))),
   settings = NULL,
+  ptid = NULL,
   runNow = TRUE
 )
 }
 \arguments{
 \item{settings}{safetyGraphics settings}
+
+\item{ptid}{participant ID to select when app is initialized}
 
 \item{dfAE}{AE Data}
 

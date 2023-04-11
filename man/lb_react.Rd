@@ -4,7 +4,7 @@
 \alias{lb_react}
 \title{Create safety line plot}
 \usage{
-lb_react(data, paramVar, visVar, adyVar, baseVar, avalVar, lowVar, highVar)
+lb_react(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar)
 }
 \arguments{
 \item{data}{long data frame such as LB or VS}
@@ -14,8 +14,6 @@ lb_react(data, paramVar, visVar, adyVar, baseVar, avalVar, lowVar, highVar)
 \item{visVar}{analysis visit column}
 
 \item{adyVar}{analysis day column}
-
-\item{baseVar}{baseline value column}
 
 \item{avalVar}{analysis value column}
 
@@ -35,7 +33,6 @@ lb_react(
     paramVar = "PARAM",
     visVar = "AVISIT",
     adyVar = "ADY",
-    baseVar = "BASE",
     avalVar = "AVAL",
     lowVar = "A1LO",
     highVar = "A1HI"
