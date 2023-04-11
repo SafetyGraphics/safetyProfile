@@ -36,47 +36,56 @@ lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
     nest_by(Parameter, A1LO, A1HI, .key = 'table')  %>%
     rowwise() %>%
     mutate(spk = list(
-      sparkline(table[[avalVar]],
-
-              height = 50,
-              width = 450,
-              fillColor= FALSE,              # NO fill color
-              lineColor = '#404040',          # LINE color (gray 25)
-              minSpotColor= 'red',            # MIN value color
-              maxSpotColor= 'blue',           # MAX value color
-              spotColor   = '#404040',        # value color
-              highlightSpotColor= '#404040',
-              highlightLineColor= '#404040',
-              spotRadius = 3,                # SIZE pixels circles
-
-              normalRangeMin= A1LO,      ## turn these into inputs
-              normalRangeMax= A1HI,
-              normalRangeColor= '#e5e5e5')
-    )
-    )%>%
+      sparkline(
+        table[[avalVar]],
+        height = 25,
+        width = 400,
+        fillColor= FALSE,              # NO fill color
+        lineColor = '#404040',          # LINE color (gray 25)
+        minSpotColor= 'red',            # MIN value color
+        maxSpotColor= 'blue',           # MAX value color
+        spotColor   = '#404040',        # value color
+        highlightSpotColor= '#404040',
+        highlightLineColor= '#404040',
+        spotRadius = 3,                # SIZE pixels circles
+        normalRangeMin= A1LO,      ## turn these into inputs
+        normalRangeMax= A1HI,
+        normalRangeColor= '#e5e5e5'
+      )
+    ))%>%
+    relocate(table)%>%
     reactable(.,
               bordered = TRUE,
-              highlight = TRUE,
+              highlight = FALSE,
               searchable = TRUE,
               filterable = TRUE,
               pagination = FALSE,
-              height = 850,
               theme = fivethirtyeight(),
               columns = list(
-                Parameter = colDef(maxWidth = 100),
-                A1LO = colDef(name = 'Lower Limit',
-                              maxWidth = 65),
-                A1HI = colDef(name = 'Upper Limit',
-                              maxWidth = 65),
-                table = colDef(name = 'TABLE',
-                               cell = function() htmltools::tags$button("TABLE"),
-                               details = function(index){
-                                 reactable(.$table[[index]],
-                                           pagination = FALSE,
-                                           theme = fivethirtyeight(),
-                                           defaultColDef = colDef( format = colFormat(digits = 2))
-                                 )
-                               }
+                table = colDef(
+                  maxWidth = 25,
+                  name = 'TABLE',
+                  header= function () "",
+                  cell = function() "",
+                  details = function(index){
+                    reactable(
+                      .$table[[index]],
+                      pagination = FALSE,
+                      theme = fivethirtyeight(),
+                      defaultColDef = colDef( format = colFormat(digits = 2))
+                    )
+                  }
+                ),
+                Parameter = colDef(
+                  maxWidth = 300
+                ),
+                A1LO = colDef(
+                  name = 'Lower Limit',
+                  maxWidth = 65
+                ),
+                A1HI = colDef(
+                  name = 'Upper Limit',
+                  maxWidth = 65
                 ),
                 spk = colDef(
                   name = '',
