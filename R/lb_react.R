@@ -14,6 +14,7 @@
 #' @import reactable
 #' @importFrom reactablefmtr fivethirtyeight
 #' @importFrom DT datatable
+#' 
 #' @return an lineplot created with ggplot
 #' @export
 #'

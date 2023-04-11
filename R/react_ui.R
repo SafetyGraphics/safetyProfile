@@ -4,6 +4,7 @@
 #'
 #' @return LB reactable tab UI
 #'
+#' 
 #'
 react_UI <- function(id){
   ns <- NS(id)
