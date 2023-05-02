@@ -19,26 +19,34 @@
 #'   colorVar = "AENDY"
 #' )
 #'
-AEplot <- function(data, paramVar, aeStartVar, aeEndVar, colorVar) {
-  x_lower_limit <- min(data[[aeStartVar]])
-  x_upper_limit <- max(data[[aeEndVar]])
+AEplot <- function(dataCombined, eventVar, startDayVar, colorVar, endDayVar) {
 
-  p <- ggplot(data) +
-    geom_point(x = data[[aeStartVar]], y = data[[paramVar]]) +
-    geom_segment(aes(
-      x = .data[[aeStartVar]],
-      xend = .data[[aeEndVar]],
-      y = .data[[paramVar]],
-      yend = .data[[paramVar]],
-      color = .data[[colorVar]]
-    ), linetype = 1, size = 2) +
-    scale_colour_brewer(palette = "Pastel1") +
-    xlab("Study Day Start/End of AE") +
-    ylab("") +
-    scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
-    theme_bw()
+  startDay <- deparse(substitute(startDayVar))
+  endDay <- deparse(substitute(endDayVar))
 
-  p + theme(legend.position = "none")
+  dataCombined  <- dataCombined[!(is.na(dataCombined[[startDay]])) | !(is.na(dataCombined[[endDay]])),]
+
+  if(nrow(dataCombined) == 0){
+    showNotification("The data do not have any start and end dates of the events. Refer to the listing.", type = "warning")
+  }
+
+    p <- ggplot(dataCombined) +
+      geom_point(aes(x = {{startDayVar}}, y = {{eventVar}})) +
+      geom_segment(aes(
+        x = {{startDayVar}},
+        xend = {{endDayVar}},
+        y = {{eventVar}},
+        yend = {{eventVar}},
+        color = {{colorVar}}
+        ), linetype = 1, size = 2) +
+
+        scale_colour_brewer(palette = "Pastel1") +
+        xlab("Study Day Start/End") +
+        ylab("") +
+        # scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
+        theme_bw()
+
+    p + theme(legend.position = "none")
 
   return(p)
 }

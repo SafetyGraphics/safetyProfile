@@ -13,7 +13,8 @@ profileApp <- function(
   data = list(
     aes = safetyData::adam_adae,
     dm = safetyData::adam_adsl,
-    labs = safetyData::adam_adlbc %>% filter(PARAMCD %in% c("PHOS", "GLUC", "PROT"))
+    labs = safetyData::adam_adlbc %>% filter(PARAMCD %in% c("PHOS", "GLUC", "PROT")),
+    cm = safetyData::sdtm_cm
   ),
   settings = NULL,
   ptid = NULL,
@@ -45,6 +46,15 @@ profileApp <- function(
         sex_col = "SEX",
         race_col = "RACE",
         age_col = "AGE"
+      ),
+      cm = list(
+        id_col = "USUBJID",
+        cmtrt_col = "CMTRT",
+        stdy_col = "CMSTDY",
+        endy_col = "CMENDY",
+        class_col = "CMCLAS",
+        desc_col = "CMINDC"
+
       )
     )
   }
