@@ -4,9 +4,11 @@
 \alias{AEplot}
 \title{Create AEplot}
 \usage{
-AEplot(data, paramVar, aeStartVar, aeEndVar, colorVar)
+AEplot(dataCombined, eventVar, startDayVar, colorVar, endDayVar)
 }
 \arguments{
+\item{colorVar}{AE Severity}
+
 \item{data}{AE data frame}
 
 \item{paramVar}{AE Preferred Term Column AETERM}
@@ -14,8 +16,6 @@ AEplot(data, paramVar, aeStartVar, aeEndVar, colorVar)
 \item{aeStartVar}{AE Start day column}
 
 \item{aeEndVar}{AE End day column}
-
-\item{colorVar}{AE Severity}
 }
 \value{
 an AE  plot created with ggplot
@@ -25,12 +25,11 @@ Create AEplot
 }
 \examples{
 AEplot(
-    data=safetyData::adam_adae,
-    paramVar = "AETERM",
-    aeStartVar= "ASTDY",
-    aeEndVar="AENDY",
-    colorVar="AENDY"
-   )
-
+  data = safetyData::adam_adae,
+  paramVar = "AETERM",
+  aeStartVar = "ASTDY",
+  aeEndVar = "AENDY",
+  colorVar = "AENDY"
+)
 
 }

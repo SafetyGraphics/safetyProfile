@@ -1,5 +1,21 @@
 
-combine_ae_cm <- function(aes_data, cm_data, settings){
+#' Combine AE and CM data
+#'
+#' @param aes_data AE data
+#' @param cm_data CM data
+#' @param settings safetyGraphics settings
+#'
+#' @return combined dataset with stacked AE and CM data
+
+#'
+#' @examples
+#' combine_domains(
+#'      aes_data = params()$data$aes,
+#'      cm_data = params()$data$cm,
+#'      settings = params()$settings
+#'      )
+
+combine_domains <- function(aes_data, cm_data, settings){
 
   aes_settings <- settings$aes
   cm_settings <- settings$cm

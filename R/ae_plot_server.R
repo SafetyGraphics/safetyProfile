@@ -20,38 +20,19 @@ ae_plot_server <- function(id, params, current_id) {
       params()$settings$dm$id_col
     })
 
-    ## AE Stuff (to be moved to module)
-    # aes_sub <- reactive({
-    #   req(params()$data$aes)
-    #   aes_dat <- params()$settings$aes
-    #   params()$data$aes %>% select(
-    #     aes_dat$id_col,
-    #     aes_dat$siteid_col,
-    #     aes_dat$trarm_col,
-    #     aes_dat$stdy_col,
-    #     aes_dat$endy_col,
-    #     aes_dat$bodsys_col,
-    #     aes_dat$term_col,
-    #     aes_dat$severity_col
-    #   )
-    # })
-
     combined <- reactive({
       req(params()$data$aes)
       req(params()$data$cm)
 
-      combine_ae_cm(aes_data = params()$data$aes,
+      combine_domains(aes_data = params()$data$aes,
                     cm_data = params()$data$cm,
-                    settings = params()$settings) # %>%
-        # na.omit(ENDY)
+                    settings = params()$settings)
     })
 
     observe({
       print(combined() %>% filter(!!sym(id_col()) == current_id()))
 
     })
-
-
 
     output$AEplot <- renderPlot({
 
@@ -63,7 +44,6 @@ ae_plot_server <- function(id, params, current_id) {
             endDayVar = ENDY,
             colorVar = DOMAIN
           )
-# browser()
       }  else {
         showNotification("There are no Adverse Events for this subject", type = "warning")
       }
