@@ -13,7 +13,7 @@ profileApp <- function(
   data = list(
     aes = safetyData::adam_adae,
     dm = safetyData::adam_adsl,
-    labs = safetyData::adam_adlbc %>% filter(PARAMCD %in% c("PHOS", "GLUC", "PROT")),
+    labs = safetyData::adam_adlbc,
     cm = safetyData::sdtm_cm
   ),
   settings = NULL,
@@ -28,7 +28,10 @@ profileApp <- function(
         id_col = "USUBJID",
         measure_col = "PARAM",
         value_col = "AVAL",
-        studyday_col = "ADY"
+        studyday_col = "ADY",
+        normal_col_low="A1LO", 
+        normal_col_high="A1HI",
+        visit_col="AVISIT"
       ),
       aes = list(
         id_col = "USUBJID",
