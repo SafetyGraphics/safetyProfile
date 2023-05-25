@@ -10,6 +10,7 @@
 #'
 #' @import ggplot2
 #' @import reactable
+#' @import ggiraph
 #' @importFrom reactablefmtr fivethirtyeight
 #' @importFrom DT datatable
 #'
@@ -18,7 +19,7 @@
 #'
 #' @examples
 #' lb_react(
-#'     data=safetyData::adam_adlb,
+#'     data=safetyData::adam_adlbh,
 #'     paramVar = "PARAM",
 #'     visVar = "AVISIT",
 #'     adyVar = "ADY",
@@ -101,6 +102,3 @@ lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
 
   return(p)
 }
-
-
-#lb_react(data = adam_adlbh, paramVar = "PARAM", visVar = "AVISIT", adyVar = "ADY", avalVar = 'AVAL', lowVar = "A1LO", highVar = "A1HI")
