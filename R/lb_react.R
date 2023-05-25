@@ -9,11 +9,10 @@
 #' @param highVar upper limit column
 #'
 #' @import ggplot2
-#' @import sparkline
 #' @import reactable
 #' @importFrom reactablefmtr fivethirtyeight
 #' @importFrom DT datatable
-#' 
+#'
 #' @return an lineplot created with ggplot
 #' @export
 #'
@@ -32,28 +31,32 @@
 lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
 
   p <- data %>%
-    select(Parameter = {{paramVar}}, A1LO = {{lowVar}}, A1HI = {{highVar}}, {{visVar}}, {{adyVar}}, {{avalVar}}) %>%
+    select(Parameter = {{paramVar}}, A1LO = {{lowVar}}, A1HI = {{highVar}}, AVISIT = {{visVar}}, ADY = {{adyVar}}, AVAL = {{avalVar}}) %>%
     nest_by(Parameter, A1LO, A1HI, .key = 'table')  %>%
     rowwise() %>%
-    mutate(spk = list(
-      sparkline(
-        table[[avalVar]],
-        height = 25,
-        width = 400,
-        fillColor= FALSE,              # NO fill color
-        lineColor = '#404040',          # LINE color (gray 25)
-        minSpotColor= 'red',            # MIN value color
-        maxSpotColor= 'blue',           # MAX value color
-        spotColor   = '#404040',        # value color
-        highlightSpotColor= '#404040',
-        highlightLineColor= '#404040',
-        spotRadius = 3,                # SIZE pixels circles
-        normalRangeMin= A1LO,      ## turn these into inputs
-        normalRangeMax= A1HI,
-        normalRangeColor= '#e5e5e5'
-      )
-    ))%>%
-    relocate(table)%>%
+      mutate(gg = list( ggplot(data = table,
+                            aes(x = ADY,
+                                y = AVAL,
+                                label = AVISIT) ) +
+                        # annotate('rect', xmin = -Inf, xmax = Inf,
+                        #          ymin = A1LO, ymax = A1HI,
+                        #          alpha = 0.15) +
+                        geom_point_interactive(
+                           aes(tooltip = str_glue("Analysis Value: {AVAL} <br> Analysis Day (Visit): {ADY} <small>({AVISIT})</small>"))
+                        ) +
+                        geom_line() +
+                        theme_void() ),
+          gi = list( girafe(ggobj = gg,
+                            fonts = list(sans = "Roboto"),
+                            width_svg = 4, height_svg = 0.65,
+                            options = list(
+                               opts_sizing(rescale = FALSE),
+                               opts_toolbar(saveaspng = FALSE),
+                               opts_tooltip(opacity = 0.5)
+                            ))
+          )) %>%
+    relocate(table) %>%
+    select(-gg) %>%
     reactable(.,
               bordered = TRUE,
               highlight = FALSE,
@@ -72,7 +75,7 @@ lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
                       .$table[[index]],
                       pagination = FALSE,
                       theme = fivethirtyeight(),
-                      defaultColDef = colDef( format = colFormat(digits = 2))
+                      defaultColDef = colDef(format = colFormat(digits = 2))
                     )
                   }
                 ),
@@ -86,14 +89,18 @@ lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
                 A1HI = colDef(
                   name = 'Upper Limit',
                   maxWidth = 65
-                ),
-                spk = colDef(
+                ) ,
+                gi = colDef(
                   name = '',
                   width = 500,
-                  cell = function(value, index) .$spk[[index]]
+                  html = TRUE,
+                  cell  = function(x){return(htmltools::div(x))}
                 )
               )
     )
 
   return(p)
 }
+
+
+#lb_react(data = adam_adlbh, paramVar = "PARAM", visVar = "AVISIT", adyVar = "ADY", avalVar = 'AVAL', lowVar = "A1LO", highVar = "A1HI")
