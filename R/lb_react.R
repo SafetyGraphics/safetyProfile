@@ -39,9 +39,9 @@ lb_react <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
                             aes(x = ADY,
                                 y = AVAL,
                                 label = AVISIT) ) +
-                        # annotate('rect', xmin = -Inf, xmax = Inf,
-                        #          ymin = A1LO, ymax = A1HI,
-                        #          alpha = 0.15) +
+                         annotate('rect', xmin = -Inf, xmax = Inf,
+                                  ymin = A1LO, ymax = A1HI,
+                                  alpha = 0.15) +
                         geom_point_interactive(
                            aes(tooltip = str_glue("Analysis Value: {AVAL} <br> Analysis Day (Visit): {ADY} <small>({AVISIT})</small>"))
                         ) +
