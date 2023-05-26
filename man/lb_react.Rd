@@ -29,7 +29,7 @@ Create safety line plot
 }
 \examples{
 lb_react(
-    data=safetyData::adam_adlb,
+    data=safetyData::adam_adlbh,
     paramVar = "PARAM",
     visVar = "AVISIT",
     adyVar = "ADY",
