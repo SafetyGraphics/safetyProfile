@@ -4,11 +4,9 @@
 \alias{AEplot}
 \title{Create AEplot}
 \usage{
-AEplot(dataCombined, eventVar, startDayVar, colorVar, endDayVar)
+AEplot(data)
 }
 \arguments{
-\item{colorVar}{AE Severity}
-
 \item{data}{AE data frame}
 
 \item{paramVar}{AE Preferred Term Column AETERM}
@@ -16,6 +14,8 @@ AEplot(dataCombined, eventVar, startDayVar, colorVar, endDayVar)
 \item{aeStartVar}{AE Start day column}
 
 \item{aeEndVar}{AE End day column}
+
+\item{colorVar}{AE Severity}
 }
 \value{
 an AE  plot created with ggplot
