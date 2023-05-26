@@ -6,7 +6,7 @@
 \usage{
 profileApp(
   data = list(aes = safetyData::adam_adae, dm = safetyData::adam_adsl, labs =
-    safetyData::adam_adlbc \%>\% filter(PARAMCD \%in\% c("PHOS", "GLUC", "PROT"))),
+    safetyData::adam_adlbc),
   settings = NULL,
   ptid = NULL,
   runNow = TRUE

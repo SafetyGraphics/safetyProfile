@@ -11,6 +11,7 @@
 #' @import ggplot2
 #' @import reactable
 #' @import ggiraph
+#' @importFrom stringr str_glue
 #' @importFrom reactablefmtr fivethirtyeight
 #' @importFrom DT datatable
 #'
