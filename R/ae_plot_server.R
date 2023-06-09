@@ -7,7 +7,7 @@
 #' @param id Shiny module id
 #' @param current_id current selected id
 #'
-#'
+#' @import safetyCharts
 #' @return Reactive containing AE plot and listing
 #'
 
@@ -27,24 +27,24 @@ ae_plot_server <- function(id, params, current_id) {
       safetyCharts::stack_events(
         data = params()$data,
         settings = params()$settings
-      ) %>% 
+      ) %>%
       filter(id == current_id())
     })
     sub <- reactive({
-      data() %>% 
-        filter(!(is.na(stdy) & is.na(endy))) %>% 
+      data() %>%
+        filter(!(is.na(stdy) & is.na(endy))) %>%
         mutate(seq = row_number())
     })
-  
+
     footnote <- reactive({
       dropped <- nrow(data()) - nrow(sub())
       ifelse(
         dropped > 0,
-        paste("Dropped",dropped,"rows with missing start and end dates."), 
+        paste("Dropped",dropped,"rows with missing start and end dates."),
         ""
       )
     })
-  
+
     output$AEplot <- renderPlot(
       width = 600,
       height = function(){(nrow(sub()) * 10) +50},
