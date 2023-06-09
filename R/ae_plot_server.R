@@ -50,7 +50,7 @@ ae_plot_server <- function(id, params, current_id) {
       height = function(){(nrow(sub()) * 10) +50},
       {
       if(!nrow(sub()) == 0) {
-        AEplot(sub())
+        AEplot(sub(), footnote())
       } else {
         showNotification("No events with valid dates for this subject", type = "warning")
       }

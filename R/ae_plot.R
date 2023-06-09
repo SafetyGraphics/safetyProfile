@@ -19,16 +19,16 @@
 #'   colorVar = "AENDY"
 #' )
 #'
-AEplot <- function(data) {
+AEplot <- function(data, footnote) {
 if(nrow(data) == 0){
     showNotification("No records with start/end date found", type = "warning")
   }
-  
+
   p <- ggplot(data) +
     geom_point(
       aes(
-        x = stdy, 
-        y = seq, 
+        x = stdy,
+        y = seq,
         color=domain
       )
     ) +
@@ -39,13 +39,14 @@ if(nrow(data) == 0){
         y = seq,
         yend = seq,
         color = domain,
-      ), 
-      linetype = 1, 
+      ),
+      linetype = 1,
       size = 2
     ) +
     scale_colour_brewer(palette = "Pastel1") +
     xlab("Study Day Start/End") +
     ylab("") +
+    labs(caption = footnote)+
     # scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
     theme_bw()
 
