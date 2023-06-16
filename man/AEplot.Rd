@@ -4,7 +4,7 @@
 \alias{AEplot}
 \title{Create AEplot}
 \usage{
-AEplot(data)
+AEplot(data, footnote)
 }
 \arguments{
 \item{data}{AE data frame}

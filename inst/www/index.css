@@ -1,0 +1,22 @@
+.profile-header {
+    background: #e7e7e7;
+    padding: 0.5em 0.5em 0.2em 0.5em;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #bbb;
+}
+
+.profile-header * {
+    display: inline-block;
+    padding-left: 0.4em;
+}
+
+.profile-header strong {
+    font-size: 1.2em;
+}
+
+.profile-header small {
+    font-size: 0.8em;
+    color: #999;
+}
