@@ -72,7 +72,7 @@ profileApp <- function(
 
   ## Create app with ui and server
   app <- shinyApp(
-    ui = profile_ui("profile"),
+    ui = fluidPage(profile_ui("profile")),
     server = function(input, output, session) {
       id <- profile_server(
         "profile",

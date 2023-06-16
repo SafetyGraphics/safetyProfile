@@ -17,7 +17,7 @@ id_ui <- function(id) {
 
   ## bring components together as complete ui
   ui <- div(
-    class="profile-header",
+    class="profile-header chart-header",
     div(
         tags$small("ID"),
         selectInput(
