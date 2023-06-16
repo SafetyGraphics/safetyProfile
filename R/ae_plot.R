@@ -19,34 +19,38 @@
 #'   colorVar = "AENDY"
 #' )
 #'
-AEplot <- function(dataCombined, eventVar, startDayVar, colorVar, endDayVar) {
-
-  startDay <- deparse(substitute(startDayVar))
-  endDay <- deparse(substitute(endDayVar))
-
-  dataCombined  <- dataCombined[!(is.na(dataCombined[[startDay]])) | !(is.na(dataCombined[[endDay]])),]
-
-  if(nrow(dataCombined) == 0){
-    showNotification("The data do not have any start and end dates of the events. Refer to the listing.", type = "warning")
+AEplot <- function(data, footnote) {
+if(nrow(data) == 0){
+    showNotification("No records with start/end date found", type = "warning")
   }
 
-    p <- ggplot(dataCombined) +
-      geom_point(aes(x = {{startDayVar}}, y = {{eventVar}})) +
-      geom_segment(aes(
-        x = {{startDayVar}},
-        xend = {{endDayVar}},
-        y = {{eventVar}},
-        yend = {{eventVar}},
-        color = {{colorVar}}
-        ), linetype = 1, size = 2) +
+  p <- ggplot(data) +
+    geom_point(
+      aes(
+        x = stdy,
+        y = seq,
+        color=domain
+      )
+    ) +
+    geom_segment(
+      aes(
+        x = stdy,
+        xend = endy,
+        y = seq,
+        yend = seq,
+        color = domain,
+      ),
+      linetype = 1,
+      size = 2
+    ) +
+    scale_colour_brewer(palette = "Pastel1") +
+    xlab("Study Day Start/End") +
+    ylab("") +
+    labs(caption = footnote)+
+    # scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
+    theme_bw()
 
-        scale_colour_brewer(palette = "Pastel1") +
-        xlab("Study Day Start/End") +
-        ylab("") +
-        # scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
-        theme_bw()
-
-    p + theme(legend.position = "none")
+  p + theme(legend.position = "none")
 
   return(p)
 }

@@ -7,7 +7,7 @@
 #' @param id Shiny module id
 #' @param current_id current selected id
 #'
-#'
+#' @import safetyCharts
 #' @return Reactive containing AE plot and listing
 #'
 
@@ -20,37 +20,44 @@ ae_plot_server <- function(id, params, current_id) {
       params()$settings$dm$id_col
     })
 
-    combined <- reactive({
-      req(params()$data$aes)
-      req(params()$data$cm)
+    data <- reactive({
+      req(params()$data)
+      req(params()$settings)
 
-      combine_domains(aes_data = params()$data$aes,
-                    cm_data = params()$data$cm,
-                    settings = params()$settings)
+      safetyCharts::stack_events(
+        data = params()$data,
+        settings = params()$settings
+      ) %>%
+      filter(id == current_id())
+    })
+    sub <- reactive({
+      data() %>%
+        filter(!(is.na(stdy) & is.na(endy))) %>%
+        mutate(seq = row_number())
     })
 
-    observe({
-      print(combined() %>% filter(!!sym(id_col()) == current_id()))
-
+    footnote <- reactive({
+      dropped <- nrow(data()) - nrow(sub())
+      ifelse(
+        dropped > 0,
+        paste("Dropped",dropped,"rows with missing start and end dates."),
+        ""
+      )
     })
 
-    output$AEplot <- renderPlot({
-
-        if (!nrow(combined() %>% filter(!!sym(id_col()) == current_id())) == 0) {
-          AEplot(
-            dataCombined = combined() %>% filter(!!sym(id_col()) == current_id()),
-            eventVar = EVENT,
-            startDayVar = STDY,
-            endDayVar = ENDY,
-            colorVar = DOMAIN
-          )
-      }  else {
-        showNotification("There are no Adverse Events for this subject", type = "warning")
+    output$AEplot <- renderPlot(
+      width = 600,
+      height = function(){(nrow(sub()) * 10) +50},
+      {
+      if(!nrow(sub()) == 0) {
+        AEplot(sub(), footnote())
+      } else {
+        showNotification("No events with valid dates for this subject", type = "warning")
       }
     })
 
     output$AEtable <- renderDT({
-      combined() %>% filter(!!sym(id_col()) == current_id())
+      data()
     })
   })
 }
