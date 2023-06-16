@@ -19,23 +19,35 @@
 #'   colorVar = "AENDY"
 #' )
 #'
-AEplot <- function(data, paramVar, aeStartVar, aeEndVar, colorVar) {
-  x_lower_limit <- min(data[[aeStartVar]])
-  x_upper_limit <- max(data[[aeEndVar]])
+AEplot <- function(data, footnote) {
+if(nrow(data) == 0){
+    showNotification("No records with start/end date found", type = "warning")
+  }
 
   p <- ggplot(data) +
-    geom_point(x = data[[aeStartVar]], y = data[[paramVar]]) +
-    geom_segment(aes(
-      x = .data[[aeStartVar]],
-      xend = .data[[aeEndVar]],
-      y = .data[[paramVar]],
-      yend = .data[[paramVar]],
-      color = .data[[colorVar]]
-    ), linetype = 1, size = 2) +
+    geom_point(
+      aes(
+        x = stdy,
+        y = seq,
+        color=domain
+      )
+    ) +
+    geom_segment(
+      aes(
+        x = stdy,
+        xend = endy,
+        y = seq,
+        yend = seq,
+        color = domain,
+      ),
+      linetype = 1,
+      size = 2
+    ) +
     scale_colour_brewer(palette = "Pastel1") +
-    xlab("Study Day Start/End of AE") +
+    xlab("Study Day Start/End") +
     ylab("") +
-    scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
+    labs(caption = footnote)+
+    # scale_x_continuous(limits = c(x_lower_limit, x_upper_limit)) +
     theme_bw()
 
   p + theme(legend.position = "none")

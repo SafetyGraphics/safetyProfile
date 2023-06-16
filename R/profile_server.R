@@ -52,6 +52,32 @@ profile_server <- function(id, params, ptid = reactive({
       input$idSelect
     })
 
+    #------------------------------------------
+    # Make a simple Demographics summary
+    demogData <- reactive({
+      params()$data$dm %>% filter(!!sym(id_col()) == current_id())
+    })
+
+    demogHTML <- reactive({
+      demogCols <- params()$settings$dm[grep("_col", names(params()$settings$dm))]
+      names <- names(demogCols)
+      vals <- list(demogCols %>% map_chr(~ as.character(demogData()[1, .x]))) %>% unlist()
+      names(vals) <- names
+      lis <- vals %>% imap(function(val, name) {
+        tags$li(
+          tags$small(name, class = "dlabel"),
+          tags$strong(val, class = "dvalue")
+        )
+      })
+      return(tags$ul(lis, class = "dlist"))
+    })
+
+    output$demogList <- renderUI({
+      demogHTML()
+    })
+
+    #------------------------------------------
+
     ## Call  Modules
     ae_plot_server("ae_plot", params, current_id)
     safety_lineplot_server("safety_line_plot", params, current_id)

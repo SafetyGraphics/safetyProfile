@@ -10,7 +10,7 @@ ae_plot_UI <- function(id) {
 
   div(
     h5(htmlOutput(ns("AE Plot"))),
-    plotOutput(ns("AEplot")),
+    plotOutput(ns("AEplot"),height="100%"),
     DTOutput(ns("AEtable"))
   )
 }

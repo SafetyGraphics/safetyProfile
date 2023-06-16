@@ -7,7 +7,7 @@
 #' @param id Shiny module id
 #' @param current_id current selected id
 #'
-#'
+#' @import safetyCharts
 #' @return Reactive containing AE plot and listing
 #'
 
@@ -20,38 +20,44 @@ ae_plot_server <- function(id, params, current_id) {
       params()$settings$dm$id_col
     })
 
-    ## AE Stuff (to be moved to module)
-    aes_sub <- reactive({
-      req(params()$data$aes)
-      aes_dat <- params()$settings$aes
-      params()$data$aes %>% select(
-        aes_dat$id_col,
-        aes_dat$siteid_col,
-        aes_dat$trarm_col,
-        aes_dat$stdy_col,
-        aes_dat$endy_col,
-        aes_dat$bodsys_col,
-        aes_dat$term_col,
-        aes_dat$severity_col
+    data <- reactive({
+      req(params()$data)
+      req(params()$settings)
+
+      safetyCharts::stack_events(
+        data = params()$data,
+        settings = params()$settings
+      ) %>%
+      filter(id == current_id())
+    })
+    sub <- reactive({
+      data() %>%
+        filter(!(is.na(stdy) & is.na(endy))) %>%
+        mutate(seq = row_number())
+    })
+
+    footnote <- reactive({
+      dropped <- nrow(data()) - nrow(sub())
+      ifelse(
+        dropped > 0,
+        paste("Dropped",dropped,"rows with missing start and end dates."),
+        ""
       )
     })
 
-    output$AEplot <- renderPlot({
-      if (!nrow(params()$data$aes %>% filter(!!sym(id_col()) == current_id())) == 0) {
-        AEplot(
-          data = params()$data$aes %>% filter(!!sym(id_col()) == current_id()),
-          paramVar = params()$settings$aes$term_col,
-          aeStartVar = params()$settings$aes$stdy_col,
-          aeEndVar = params()$settings$aes$endy_col,
-          colorVar = params()$settings$aes$severity_col
-        )
+    output$AEplot <- renderPlot(
+      width = 600,
+      height = function(){(nrow(sub()) * 10) +50},
+      {
+      if(!nrow(sub()) == 0) {
+        AEplot(sub(), footnote())
       } else {
-        showNotification("There are no Adverse Events for this subject", type = "warning")
+        showNotification("No events with valid dates for this subject", type = "warning")
       }
     })
 
     output$AEtable <- renderDT({
-      aes_sub() %>% filter(!!sym(id_col()) == current_id())
+      data()
     })
   })
 }
