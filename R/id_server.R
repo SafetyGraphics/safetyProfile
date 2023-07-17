@@ -23,9 +23,9 @@
 
 
 id_server <- function(
-    id, 
-    params, 
-    ptid = reactive({NULL})) 
+    id,
+    params,
+    ptid = reactive({NULL}))
 {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -64,22 +64,24 @@ id_server <- function(
     #------------------------------------------
     # Make a simple Demographics summary
     demogData <- reactive({
+      req(current_id())
       params()$data$dm %>% filter(!!sym(id_col()) == current_id())
     })
 
     demogHTML <- reactive({
+      req(current_id())
       demogCols <- params()$settings$dm[grep("_col", names(params()$settings$dm))]
       names <- names(demogCols)
-      vals <- list(demogCols %>% map_chr(~ as.character(demogData()[1, .x]))) %>% unlist()
+      vals <- list(demogCols %>% purrr::map_chr(~ as.character(demogData()[1, .x]))) %>% unlist()
       names(vals) <- names
       vals$id_col <- NULL
-      divs <- vals %>% imap(function(val, name) {
+      divs <- vals %>% purrr::imap(function(val, name) {
         div(
           tags$small(name),
           val
         )
       })
-    
+
       return(divs)
     })
 
