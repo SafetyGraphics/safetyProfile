@@ -21,16 +21,20 @@ ae_plot_server <- function(id, params, current_id) {
     })
 
     data <- reactive({
+
       req(params()$data)
       req(params()$settings)
+      req(current_id())
 
       safetyCharts::stack_events(
         data = params()$data,
-        settings = params()$settings
+        settings = params()$settings,
+        domains = names(params()$data)
       ) %>%
       filter(id == current_id())
     })
     sub <- reactive({
+      req(data())
       data() %>%
         filter(!(is.na(stdy) & is.na(endy))) %>%
         mutate(seq = row_number())
@@ -57,6 +61,7 @@ ae_plot_server <- function(id, params, current_id) {
     })
 
     output$AEtable <- renderDT({
+
       data()
     })
   })
