@@ -9,8 +9,8 @@ ae_plot_UI <- function(id) {
   ns <- NS(id)
 
   div(
-    # h3("AE and CM Timelines"),
-    plotOutput(ns("AEplot"),height="100%"),
+    h5(htmlOutput(ns("AE Plot"))),
+    plotlyOutput(ns("AEplot")),
     DTOutput(ns("AEtable"))
   )
 }
