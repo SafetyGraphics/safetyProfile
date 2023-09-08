@@ -8,6 +8,7 @@
 #' @param current_id current selected id
 #'
 #' @import safetyCharts
+#' @import plotly
 #' @return Reactive containing AE plot and listing
 #'
 
@@ -49,20 +50,29 @@ ae_plot_server <- function(id, params, current_id) {
       )
     })
 
-    output$AEplot <- renderPlot(
-      width = 600,
-      height = function(){(nrow(sub()) * 10) +50},
+    output$AEplot <- renderPlotly(
       {
       if(!nrow(sub()) == 0) {
         AEplot(sub(), footnote())
+
       } else {
         showNotification("No events with valid dates for this subject", type = "warning")
       }
     })
 
     output$AEtable <- renderDT({
-
-      data()
-    })
+      sub() %>%
+        mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
+        rename(`Subject ID` = id,
+               `Start Day` = stdy,
+               `End Day` = endy,
+               `Event Details` = details,
+               `Domain` = domain) %>%
+        select(-seq)
+    },
+    options = list(paging = FALSE),
+    escape = FALSE,
+    rownames = FALSE)
   })
+
 }
