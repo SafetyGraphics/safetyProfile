@@ -50,7 +50,7 @@ ae_plot_server <- function(id, params, current_id) {
       )
     })
 
-    output$AEplot <- renderPlotly(
+    output$AEplot <- plotly::renderPlotly(
       {
       if(!nrow(sub()) == 0) {
         AEplot(sub(), footnote())
@@ -60,7 +60,7 @@ ae_plot_server <- function(id, params, current_id) {
       }
     })
 
-    output$AEtable <- renderDT({
+    output$AEtable <- DT::renderDT({
       sub() %>%
         mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
         rename(`Subject ID` = id,

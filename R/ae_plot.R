@@ -27,7 +27,7 @@ if(nrow(data) == 0){
     showNotification("No records with start/end date found", type = "warning")
   }
 
-  p <- ggplot(data %>%
+  p <- ggplot2::ggplot(data %>%
                 mutate(seq = forcats::fct_reorder(as.character(seq), stdy) %>% forcats::fct_rev()),
               aes(x = stdy,
                   y = seq,
@@ -55,7 +55,7 @@ if(nrow(data) == 0){
 
     plotly::ggplotly(p, tooltip = c("text"), source = "AEsource") %>%
     layout(legend = list(orientation = "h", x = 0, y = -0.2),
-           title = list(text = glue("Study Event Timeline
+           title = list(text = glue::glue("Study Event Timeline
                                     <sup>{nrow(data %>% filter(domain == 'aes'))} Adverse Events, {nrow(data %>% filter(domain == 'cm'))} Concomitent Medications</sup>")
                         ),
            annotations =

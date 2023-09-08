@@ -24,12 +24,10 @@ an AE  plot created with ggplot
 Create AEplot
 }
 \examples{
-AEplot(
-  data = safetyData::adam_adae,
-  paramVar = "AETERM",
-  aeStartVar = "ASTDY",
-  aeEndVar = "AENDY",
-  colorVar = "AENDY"
+ AEplot(
+  data = safetyCharts::stack_events() \%>\%
+    mutate(seq = dplyr::row_number()) \%>\%
+    filter(id == "01-717-1004"),
+  footnote = "fff"
 )
-
 }
