@@ -13,9 +13,11 @@
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom DT renderDT
+#' @importFrom plotly renderPlotly
 #' @importFrom reactable renderReactable
 #' @importFrom purrr map
 #' @importFrom dplyr filter
+#' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @importFrom rlang sym !!
 #' @export
