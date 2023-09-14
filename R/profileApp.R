@@ -11,8 +11,8 @@
 
 profileApp <- function(
   data = list(
-    aes = safetyData::adam_adae,
     dm = safetyData::adam_adsl,
+    aes = safetyData::adam_adae,
     labs = safetyData::adam_adlbc,
     cm = safetyData::sdtm_cm
   ),
@@ -24,6 +24,23 @@ profileApp <- function(
   ## create default settings when settings is not defined by default
   if (is.null(settings)) {
     settings <- list(
+      dm = list(
+        id_col = "USUBJID",
+        treatment_col = "ARM",
+        sex_col = "SEX",
+        race_col = "RACE",
+        age_col = "AGE"
+      ),
+      aes = list(
+        id_col = "USUBJID",
+        siteid_col = "SITEID",
+        bodsys_col = "AEBODSYS",
+        term_col = "AEDECOD",
+        #term_col = "AETERM",
+        severity_col = "AESEV",
+        stdy_col = "ASTDY",
+        endy_col = "AENDY"
+      ),
       labs = list(
         id_col = "USUBJID",
         measure_col = "PARAM",
@@ -33,23 +50,6 @@ profileApp <- function(
         normal_col_high="A1HI",
         visit_col="AVISIT"
       ),
-      aes = list(
-        id_col = "USUBJID",
-        siteid_col = "SITEID",
-        bodsys_col = "AEBODSYS",
-        term_col = "AEDECOD",
-        term_col = "AETERM",
-        severity_col = "AESEV",
-        stdy_col = "ASTDY",
-        endy_col = "AENDY"
-      ),
-      dm = list(
-        id_col = "USUBJID",
-        treatment_col = "ARM",
-        sex_col = "SEX",
-        race_col = "RACE",
-        age_col = "AGE"
-      ),
       cm = list(
         id_col = "USUBJID",
         cmtrt_col = "CMTRT",
@@ -57,7 +57,12 @@ profileApp <- function(
         endy_col = "CMENDY",
         class_col = "CMCLAS",
         desc_col = "CMINDC"
-
+      ),
+      ex = list(
+        id_col = 'USUBJID',
+        extrt_col = 'EXTRT',
+        stdy_col = "EXSTDY",
+        endy_col = "EXENDY"
       )
     )
   }

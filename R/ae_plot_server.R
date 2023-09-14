@@ -29,8 +29,7 @@ ae_plot_server <- function(id, params, current_id) {
 
       safetyCharts::stack_events(
         data = params()$data,
-        settings = params()$settings,
-        domains = names(params()$data)
+        settings = params()$settings
       ) %>%
       filter(id == current_id())
     })
