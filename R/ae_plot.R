@@ -23,47 +23,95 @@
 
 
 AEplot <- function(data, footnote) {
-if(nrow(data) == 0){
-    showNotification("No records with start/end date found", type = "warning")
-  }
+    if (nrow(data) == 0) {
+        showNotification("No records with start/end date found", type = "warning")
+    }
 
-  p <- ggplot2::ggplot(data %>%
-                mutate(seq = forcats::fct_reorder(as.character(seq), stdy) %>% forcats::fct_rev()),
-              aes(x = stdy,
-                  y = seq,
-                  text = glue::glue("{details}"))) +
-    geom_point(
-      aes(
-        color = domain
-      )
-    ) +
-    geom_segment(
-      aes(
-        xend = endy,
-        yend = seq,
-        color = domain
-      ),
-      linetype = 1,
-      linewidth = 2
-    ) +
-    scale_colour_brewer(palette = "Dark2") +
-    xlab("Study Day Start/End") +
-    ylab("") +
-    theme_bw() +
-    theme(axis.text.y = element_blank(),
-          axis.ticks.y = element_blank())
+    p <- data %>%
+        mutate(
+            seq = forcats::fct_reorder(as.character(seq), stdy) %>% forcats::fct_rev()
+        ) %>%
+        ggplot2::ggplot(aes(
+            x = stdy,
+            y = seq,
+            color = domain,
+            text = glue::glue("{details}")
+        )) +
+        geom_point() +
+        geom_segment(
+            aes(
+                xend = endy,
+                yend = seq
+            ),
+            linetype = 1,
+            linewidth = 2
+        ) +
+        scale_colour_brewer(palette = "Dark2") +
+        xlab("Study Day Start/End") +
+        ylab("") +
+        theme_bw() +
+        theme(
+            axis.text.y = element_blank(),
+            axis.ticks.y = element_blank()
+        )
 
-    plotly::ggplotly(p, tooltip = c("text"), source = "AEsource") %>%
-    layout(legend = list(orientation = "h", x = 0, y = -0.2),
-           title = list(text = glue::glue("Study Event Timeline
-                                    <sup>{nrow(data %>% filter(domain == 'aes'))} Adverse Events, {nrow(data %>% filter(domain == 'cm'))} Concomitent Medications</sup>")
-                        ),
-           annotations =
-             list(x = 1, y = -.3, text = glue("{footnote}"),
-                  showarrow = F, xref='paper', yref='paper',
-                  xanchor='right', yanchor='auto', xshift=0, yshift=0),
-           margin = list(t = 50))
+    n_events_by_domain <- map_chr(
+        unique(data$domain),
+        function(domain) {
+            n_events <- data %>%
+                filter(.data$domain == !!domain) %>%
+                nrow()
 
+            s <- ifelse(
+                n_events != 1,
+                's',
+                ''
+            )
 
+            event_type <- switch(
+                domain,
+                aes = 'Adverse Event',
+                cm = 'Concomitant Medication',
+                ex = 'Treatment'
+            )
+
+            return(glue::glue(
+                '{n_events} {event_type}{s}'
+            ))
+        }
+    )
+
+    p %>%
+        plotly::ggplotly(
+            tooltip = c("text"),
+            source = "AEsource"
+        ) %>%
+        layout(
+            legend = list(
+                orientation = "h",
+                x = 0,
+                y = -0.2
+            ),
+            title = list(
+                text = glue::glue(
+                    "Study Event Timeline\n<sup>{paste(n_events_by_domain, collapse = ', ')}</sup>"
+                )
+            ),
+            annotations = list(
+                x = 1,
+                y = -.3,
+                text = glue("{footnote}"),
+                showarrow = F,
+                xref='paper',
+                yref='paper',
+                xanchor='right',
+                yanchor='auto',
+                xshift=0,
+                yshift=0
+            ),
+            margin = list(
+                t = 50
+            )
+        )
 }
 
