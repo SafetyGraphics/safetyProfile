@@ -35,7 +35,8 @@ react_server <-  function(id, params, current_id) {
     })
 
     # TODO Make this dynamic for any domain provided (use a sub-module?)
-    output$react <- renderReactable({
+    # output$react <- renderReactable({
+    output$react <- DT::renderDataTable({
       if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == current_id())) == 0){
         lb_react(
           data=params()$data$labs %>% filter(!!sym(id_col()) == current_id()),
@@ -48,7 +49,6 @@ react_server <-  function(id, params, current_id) {
         )}else{
           showNotification("There are no Laboratories for this subject", type = "warning")
         }
-
     })
     # output$LBtable <- renderDT({
     #   labs_sub() %>% filter(!!sym(id_col()) == current_id())

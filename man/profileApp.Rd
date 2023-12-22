@@ -5,7 +5,7 @@
 \title{Safety Profile App}
 \usage{
 profileApp(
-  data = list(aes = safetyData::adam_adae, dm = safetyData::adam_adsl, labs =
+  data = list(dm = safetyData::adam_adsl, aes = safetyData::adam_adae, labs =
     safetyData::adam_adlbc, cm = safetyData::sdtm_cm),
   settings = NULL,
   ptid = NULL,
