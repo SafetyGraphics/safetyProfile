@@ -11,7 +11,7 @@
 #' @return Reactive containing AE reactable
 #'
 
-react_server <-  function(id, params, current_id) {
+lb_tbl_server <-  function(id, params, current_id) {
 
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -36,9 +36,9 @@ react_server <-  function(id, params, current_id) {
 
     # TODO Make this dynamic for any domain provided (use a sub-module?)
     # output$react <- renderReactable({
-    output$react <- DT::renderDataTable({
+    output$lb_tbl <- DT::renderDataTable({
       if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == current_id())) == 0){
-        lb_react(
+        lb_tbl(
           data=params()$data$labs %>% filter(!!sym(id_col()) == current_id()),
           paramVar = params()$settings$labs$measure_col,
           visVar = params()$settings$labs$visit_col,
