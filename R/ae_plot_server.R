@@ -49,26 +49,17 @@ ae_plot_server <- function(id, params, current_id) {
         ""
       )
     })
-
-    ht <- reactive({
-      50*as.numeric(nrow(sub()))
-    })
-
-    output$AEplot <- renderUI({
-      plotlyOutput("plot_ae", height = ht())
-    })
-
-    output$plot_ae <- plotly::renderPlotly(
+    output$AEplot <- renderUI(
       {
         if(!nrow(sub()) == 0) {
-          AEplot(sub(), footnote())
-
+         AEplot(sub(), footnote())
         } else {
-          showNotification("No events with valid dates for this subject", type = "warning")
+          output$text1 <- renderText({paste("No events with valid dates for this subject")})
         }
       })
 
     output$AEtable <- DT::renderDT({
+      if(!nrow(sub()) == 0){
       sub() %>%
         mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
         rename(`Subject ID` = id,
@@ -77,10 +68,12 @@ ae_plot_server <- function(id, params, current_id) {
                `Event Details` = details,
                `Domain` = domain) %>%
         select(-seq)
+      }
     },
     options = list(paging = FALSE),
     escape = FALSE,
     rownames = FALSE)
+
   })
 
 }
