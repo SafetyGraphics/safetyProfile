@@ -6,10 +6,11 @@
 #'
 #'
 #'
-react_UI <- function(id){
+lb_tbl_UI <- function(id){
   ns <- NS(id)
 
-  div(
-    reactableOutput(ns("react"))
-  )
+  # div(
+    # reactableOutput(ns("react"))
+    DT::dataTableOutput(ns("lb_tbl"))
+  # )
 }

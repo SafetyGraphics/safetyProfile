@@ -34,7 +34,7 @@ profile_ui <- function(id) {
       tabPanel("Overview",OverviewUI(ns("overview"))),
       tabPanel("Event Timeline", ae_plot_UI(ns("ae_plot"))),
       # tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot"))),
-      tabPanel("Measures Over Time", react_UI(ns("react")))
+      tabPanel("Measures Over Time", lb_tbl_UI(ns("lb_tbl")))
     )
   )
 
