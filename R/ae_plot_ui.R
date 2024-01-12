@@ -8,9 +8,12 @@
 ae_plot_UI <- function(id) {
   ns <- NS(id)
 
-  div(
-    h5(htmlOutput(ns("AE Plot"))),
-    plotlyOutput(ns("AEplot")),
+  fluidPage(
+
+    #h5(htmlOutput(ns("AE Plot"))),
+    # plotlyOutput(ns("AEplot")),
+    textOutput("text1"),
+    uiOutput(ns("AEplot")),
     DTOutput(ns("AEtable"))
   )
 }

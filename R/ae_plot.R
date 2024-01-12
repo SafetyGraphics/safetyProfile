@@ -83,6 +83,7 @@ AEplot <- function(data, footnote) {
 
     p %>%
         plotly::ggplotly(
+            height = ifelse(nrow(data) < 5, 300, as.numeric(nrow(data)*35)),
             tooltip = c("text"),
             source = "AEsource"
         ) %>%
@@ -113,5 +114,6 @@ AEplot <- function(data, footnote) {
                 t = 50
             )
         )
+
 }
 
