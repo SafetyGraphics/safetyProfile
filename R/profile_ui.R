@@ -23,7 +23,7 @@ profile_ui <- function(id) {
   ui <- tagList(
     shinyjs::useShinyjs(),
     tags$head(
-      tags$style(app_css)    
+      tags$style(app_css)
     ),
 
     # ID select
@@ -32,11 +32,11 @@ profile_ui <- function(id) {
     # Call Modules
     tabsetPanel(id=ns("tableWrap"), type = "tabs",
       tabPanel("Overview",OverviewUI(ns("overview"))),
-      tabPanel("AE Plot", ae_plot_UI(ns("ae_plot"))),
-      tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot"))),
-      tabPanel("LB Reactable", react_UI(ns("react")))
+      tabPanel("Event Timeline", ae_plot_UI(ns("ae_plot"))),
+      # tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot"))),
+      tabPanel("Measures Over Time", react_UI(ns("react")))
     )
   )
-  
+
   return(ui)
 }
