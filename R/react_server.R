@@ -40,12 +40,12 @@ lb_tbl_server <-  function(id, params, current_id) {
       if(!nrow(params()$data$labs %>% filter(!!sym(id_col()) == current_id())) == 0){
         lb_tbl(
           data=params()$data$labs %>% filter(!!sym(id_col()) == current_id()),
-          paramVar = params()$settings$labs$measure_col,
-          visVar = params()$settings$labs$visit_col,
-          adyVar = params()$settings$labs$studyday_col,
-          avalVar = params()$settings$labs$value_col,
-          lowVar = params()$settings$labs$normal_col_low,
-          highVar = params()$settings$labs$normal_col_high
+          measureVar = params()$settings$labs$measure_col,
+          visitVar = params()$settings$labs$visit_col,
+          studyDayVar = params()$settings$labs$studyday_col,
+          resultVar = params()$settings$labs$value_col,
+          llnVar = params()$settings$labs$normal_col_low,
+          ulnVar = params()$settings$labs$normal_col_high
         )}else{
           showNotification("There are no Laboratories for this subject", type = "warning")
         }

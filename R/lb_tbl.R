@@ -1,12 +1,12 @@
 #' Create safety line plot
 #'
 #' @param data long data frame such as LB or VS
-#' @param paramVar term column
-#' @param visVar analysis visit column
-#' @param adyVar analysis day column
-#' @param avalVar analysis value column
-#' @param lowVar lower limit column
-#' @param highVar upper limit column
+#' @param measureVar term column
+#' @param visitVar analysis visit column
+#' @param studyDayVar analysis day column
+#' @param resultVar analysis value column
+#' @param llnVar lower limit column
+#' @param ulnVar upper limit column
 #'
 #' @import ggplot2
 #' @import DT
@@ -22,62 +22,78 @@
 #' @examples
 #' lb_tbl(
 #'     data=safetyData::adam_adlbh,
-#'     paramVar = "PARAM",
-#'     visVar = "AVISIT",
-#'     adyVar = "ADY",
-#'     avalVar = "AVAL",
-#'     lowVar = "A1LO",
-#'     highVar = "A1HI"
-#'    )
-#'
-#'
-lb_tbl <- function(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar) {
+#'     measureVar = "PARAM",
+#'     visitVar = "AVISIT",
+#'     studyDayVar = "ADY",
+#'     resultVar = "AVAL",
+#'     llnVar = "A1LO",
+#'     ulnVar = "A1HI"
+#'  )
+
+lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar) {
 
   #select and rename data columns
   data <- data %>%
-    select(Parameter = {{paramVar}},
-           A1LO = {{lowVar}},
-           A1HI = {{highVar}},
-           AVISIT = {{visVar}},
-           ADY = {{adyVar}},
-           AVAL = {{avalVar}}) %>%
-    as_tibble()
+    select(
+      Measure = {{measureVar}},
+      LLN = {{llnVar}},
+      ULN = {{ulnVar}},
+      Visit = {{visitVar}},
+      `Study Day` = {{studyDayVar}},
+      Result = {{resultVar}}
+    ) %>%
+    as_tibble() %>%
+    arrange(
+      Measure, `Study Day`
+    )
 
-  #select min and max for each parameter
+  #select min and max for each measure
   min_max <- data %>%
-    group_by(Parameter) %>%
-    summarize(A1LO = format(min(A1LO),digits = 1),
-              A1HI = format(max(A1HI),digits = 1))
+    group_by(Measure) %>%
+    summarize(LLN = format(min(LLN),digits = 1),
+              ULN = format(max(ULN),digits = 1))
 
-  #identify distinct parameter values
+  #identify distinct measure values
   par_dt <- data %>%
-      distinct(Parameter)
+      distinct(Measure)
 
   # Create details column that hold column values in the list
   transposed_data <- data %>%
-    group_by(Parameter) %>%
-    summarise("_details" = list(purrr::transpose(across(AVISIT:AVAL)))) %>%
+    group_by(Measure) %>%
+    summarise(
+        `_details` = list(
+            purrr::transpose(
+                across(Visit:Result)
+            )
+        )
+    ) %>%
     mutate(' ' = '&oplus;')
 
   # Merge data
-  merged_data <- left_join(par_dt, transposed_data, by = "Parameter")
+  merged_data <- left_join(par_dt, transposed_data, by = "Measure")
 
-  #add sparkline
+  # add sparkline
   sparkline <- data %>%
-    select(Parameter, AVAL) %>%
-    group_by(Parameter) %>%
+    select(Measure, Result) %>%
+    group_by(Measure) %>%
     summarize(
       Trend = spk_chr(
-        AVAL, type ="line",
-        chartRangeMin = min(AVAL), chartRangeMax = max(AVAL)
+        Result, type ="line",
+        chartRangeMin = min(Result), chartRangeMax = max(Result)
       ))
 
   # Reorder columns
   reordered_dt <- merged_data %>%
     select(length(merged_data), everything()) %>%
-    left_join(min_max, by = "Parameter") %>%
+    left_join(min_max, by = "Measure") %>%
     left_join(sparkline) %>%
-    select(' ', Parameter, A1LO,  A1HI, Trend, '_details') # this order is important for JS code
+    select(' ',
+        Measure,
+        LLN,
+        ULN,
+        Trend,
+        '_details'
+    ) # this order is important for JS code
 
 ## the callback
 callback = JS(
@@ -172,20 +188,25 @@ callback = JS(
   "});")
 
 
-  datatable(reordered_dt, callback = callback, escape = FALSE, #-2
-            options = list(
-              paging = FALSE, fnDrawCallback = htmlwidgets::JS(
-                              '
-              function(){
-                HTMLWidgets.staticRender();
-              }
-              '
-                            ),
-              columnDefs = list(
-                list(visible = FALSE, targets = ncol(reordered_dt)),
-                list(orderable = FALSE, className = 'details-control', targets = 1),
-                list(className = "dt-center", targets = "_all")
-              )
-            )) %>%
-              spk_add_deps()
+  reordered_dt %>%
+    datatable(
+      callback = callback,
+      escape = FALSE, #-2
+      options = list(
+        columnDefs = list(
+          list(visible = FALSE, targets = ncol(reordered_dt)),
+          list(orderable = FALSE, className = 'details-control', targets = 1),
+          list(className = "dt-center", targets = "_all")
+        ),
+        fnDrawCallback = htmlwidgets::JS('
+          function() {
+            HTMLWidgets.staticRender();
+          }
+        '),
+        paging = FALSE
+      )
+      # TODO: figure out why rownames can't be turned off
+      #rownames = FALSE
+    ) %>%
+    spk_add_deps()
 }
