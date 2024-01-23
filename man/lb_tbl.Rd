@@ -4,22 +4,22 @@
 \alias{lb_tbl}
 \title{Create safety line plot}
 \usage{
-lb_tbl(data, paramVar, visVar, adyVar, avalVar, lowVar, highVar)
+lb_tbl(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar)
 }
 \arguments{
 \item{data}{long data frame such as LB or VS}
 
-\item{paramVar}{term column}
+\item{measureVar}{term column}
 
-\item{visVar}{analysis visit column}
+\item{visitVar}{analysis visit column}
 
-\item{adyVar}{analysis day column}
+\item{studyDayVar}{analysis day column}
 
-\item{avalVar}{analysis value column}
+\item{resultVar}{analysis value column}
 
-\item{lowVar}{lower limit column}
+\item{llnVar}{lower limit column}
 
-\item{highVar}{upper limit column}
+\item{ulnVar}{upper limit column}
 }
 \value{
 an lineplot created with ggplot
@@ -30,13 +30,11 @@ Create safety line plot
 \examples{
 lb_tbl(
     data=safetyData::adam_adlbh,
-    paramVar = "PARAM",
-    visVar = "AVISIT",
-    adyVar = "ADY",
-    avalVar = "AVAL",
-    lowVar = "A1LO",
-    highVar = "A1HI"
-   )
-
-
+    measureVar = "PARAM",
+    visitVar = "AVISIT",
+    studyDayVar = "ADY",
+    resultVar = "AVAL",
+    llnVar = "A1LO",
+    ulnVar = "A1HI"
+ )
 }

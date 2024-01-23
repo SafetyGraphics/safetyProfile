@@ -34,6 +34,12 @@ ae_plot_server <- function(id, params, current_id) {
         filter(id == current_id())
     })
 
+    ae_table_dat <- reactive({
+      req(data())
+      data()%>%
+      mutate(seq = row_number())
+    })
+
     sub <- reactive({
       req(data())
       data() %>%
@@ -59,8 +65,8 @@ ae_plot_server <- function(id, params, current_id) {
       })
 
     output$AEtable <- DT::renderDT({
-      if(!nrow(sub()) == 0){
-      sub() %>%
+      if(!nrow(ae_table_dat()) == 0){
+      ae_table_dat() %>%
         mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
         rename(`Subject ID` = id,
                `Start Day` = stdy,
