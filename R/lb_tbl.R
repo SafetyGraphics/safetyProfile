@@ -142,7 +142,8 @@ callback = JS(
   "                 'sortClasses': false,",
   # "                 'rowCallback': rowCallback,",
   # "                 'headerCallback': headerCallback,",
-  "                 'columnDefs': [{targets: '_all', className: 'dt-center'}]",
+  "                 'columnDefs': [{targets: '_all', className: 'dt-right'},",
+  "]",
   "               });",
   "  } else {",
   "    var subtable = $(id).DataTable({",
@@ -196,7 +197,9 @@ callback = JS(
         columnDefs = list(
           list(visible = FALSE, targets = ncol(reordered_dt)),
           list(orderable = FALSE, className = 'details-control', targets = 1),
-          list(className = "dt-center", targets = "_all")
+          # list(className = "dt-left", targets = "_all")
+          list(className = "dt-left", targets = 2),
+          list(className = "dt-right", targets = 3:4)
         ),
         fnDrawCallback = htmlwidgets::JS('
           function() {
