@@ -10,7 +10,7 @@
 #' @importFrom purrr imap map_chr
 #' @importFrom rlang sym !!
 #' @import shiny
-#' @import shinyjs
+#' @importFrom shinyjs hide removeClass
 #'
 #' @export
 

@@ -32,8 +32,7 @@
 #' @export
 
 lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar) {
-
-  #select and rename data columns
+  # select and rename data columns
   data <- data %>%
     dplyr::select(
       Measure = {{measureVar}},
@@ -48,53 +47,71 @@ lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, u
       Measure, `Study Day`
     )
 
-  #select min and max for each measure
+  # select min and max for each measure
   min_max <- data %>%
-    dplyr::group_by(Measure) %>%
-    dplyr::summarize(LLN = format(min(LLN),digits = 1),
-              ULN = format(max(ULN),digits = 1))
+    dplyr::group_by(.data$Measure) %>%
+    dplyr::summarize(LLN = format(min(.data$LLN),digits = 1),
+              ULN = format(max(.data$ULN),digits = 1))
 
-  #identify distinct measure values
+  # identify distinct measure values
   par_dt <- data %>%
-      dplyr::distinct(Measure)
+      dplyr::distinct(.data$Measure)
 
   # Create details column that hold column values in the list
   transposed_data <- data %>%
-    dplyr::group_by(Measure) %>%
+    dplyr::group_by(.data$Measure) %>%
     dplyr::summarize(
         `_details` = list(
             purrr::transpose(
-                dplyr::across(Visit:Result)
+                dplyr::across(.data$Visit:.data$Result)
             )
         )
     ) %>%
-    dplyr::mutate(' ' = '&oplus;')
+    dplyr::mutate(
+        ' ' = '&oplus;'
+    )
 
   # Merge data
-  merged_data <- dplyr::left_join(par_dt, transposed_data, by = "Measure")
+  merged_data <- par_dt %>%
+      dplyr::left_join(
+          transposed_data,
+          by = "Measure"
+      )
 
   # add sparkline
   sparkline <- data %>%
-    dplyr::select(Measure, Result) %>%
-    dplyr::group_by(Measure) %>%
+    dplyr::select(.data$Measure, .data$Result) %>%
+    dplyr::group_by(.data$Measure) %>%
     dplyr::summarize(
       Trend = sparkline::spk_chr(
-        Result, type ="line",
-        chartRangeMin = min(Result), chartRangeMax = max(Result)
+        .data$Result,
+        type = "line",
+        chartRangeMin = min(.data$Result),
+        chartRangeMax = max(.data$Result)
       ))
 
   # Reorder columns
   reordered_dt <- merged_data %>%
-    dplyr::select(length(merged_data), tidyselect::everything()) %>%
-    dplyr::left_join(min_max, by = "Measure") %>%
-    dplyr::left_join(sparkline) %>%
-    dplyr::select(' ',
-        Measure,
-        LLN,
-        ULN,
-        Trend,
+    dplyr::select(
+        length(merged_data),
+        tidyselect::everything()
+    ) %>%
+    dplyr::left_join(
+        min_max,
+        by = "Measure"
+    ) %>%
+    dplyr::left_join(
+        sparkline,
+        by = 'Measure'
+    ) %>%
+    dplyr::select(tidyselect::all_of(c(
+        ' ',
+        'Measure',
+        'LLN',
+        'ULN',
+        'Trend',
         '_details'
-    ) # this order is important for JS code
+    ))) # this order is important for JS code
 
 ## the callback
 callback <- htmlwidgets::JS(
@@ -188,7 +205,6 @@ callback <- htmlwidgets::JS(
   "    format_datatable(row.data(), childId);",
   "  }",
   "});")
-
 
   reordered_dt %>%
     DT::datatable(

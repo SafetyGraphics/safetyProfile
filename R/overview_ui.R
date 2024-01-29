@@ -7,6 +7,9 @@
 #'
 #' @return returns the selected value wrapped in a \code{reactive()}.
 #'
+#' @import shiny
+#' @importFrom DT DTOutput
+#'
 #' @export
 
 overview_ui <- function(id) {
@@ -21,6 +24,6 @@ overview_ui <- function(id) {
       label = "Select Data Domain",
       choices = c()
     ),
-    DTOutput(ns("overview"))
+    DT::DTOutput(ns("overview"))
   )
 }

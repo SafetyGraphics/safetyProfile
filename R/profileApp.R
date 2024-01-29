@@ -6,6 +6,7 @@
 #' @param ptid participant ID to select when app is initialized
 #'
 #' @import shiny
+#' @import safetyData
 #'
 #' @export
 

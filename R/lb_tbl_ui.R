@@ -8,7 +8,7 @@
 #'
 #' @export
 
-lb_tbl_UI <- function(id){
+lb_tbl_ui <- function(id){
   ns <- shiny::NS(id)
 
   shiny::dataTableOutput(ns("lb_tbl"))

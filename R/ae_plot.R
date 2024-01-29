@@ -1,4 +1,4 @@
-#' Create AEplot
+#' Create AE Plot
 #'
 #' @param data AE data frame
 #' @param paramVar AE Preferred Term Column AETERM
@@ -9,7 +9,7 @@
 #' @return an AE  plot created with ggplot
 #'
 #' @examples
-#'  AEplot(
+#'  ae_plot(
 #'   data = safetyCharts::stack_events() %>%
 #'     mutate(seq = dplyr::row_number()) %>%
 #'     filter(id == "01-717-1004"),
@@ -25,27 +25,27 @@
 #'
 #' @export
 
-AEplot <- function(data, footnote) {
+ae_plot <- function(data, footnote) {
     if (nrow(data) == 0) {
         showNotification("No records with start/end date found", type = "warning")
     }
 
     p <- data %>%
         dplyr::mutate(
-            seq = forcats::fct_reorder(as.character(seq), stdy) %>%
+            seq = forcats::fct_reorder(as.character(seq), .data$stdy) %>%
                 forcats::fct_rev()
         ) %>%
-        ggplot2::ggplot(ggplot2::aes(
-            x = stdy,
-            y = seq,
-            color = domain,
-            text = glue::glue("{details}")
+        ggplot2::ggplot(ggplot2::aes_string(
+            x = 'stdy',
+            y = 'seq',
+            color = 'domain',
+            text = 'details'
         )) +
         ggplot2::geom_point() +
         ggplot2::geom_segment(
-            ggplot2::aes(
-                xend = endy,
-                yend = seq
+            ggplot2::aes_string(
+                xend = 'endy',
+                yend = 'seq'
             ),
             linetype = 1,
             linewidth = 2
@@ -87,9 +87,13 @@ AEplot <- function(data, footnote) {
 
     p %>%
         plotly::ggplotly(
-            height = ifelse(nrow(data) < 5, 300, as.numeric(nrow(data)*35)),
-            tooltip = c("text"),
-            source = "AEsource"
+            height = ifelse(
+                nrow(data) < 5,
+                300,
+                as.numeric(nrow(data)*35)
+            ),
+            source = "AEsource",
+            tooltip = c("text")
         ) %>%
         plotly::layout(
             legend = list(

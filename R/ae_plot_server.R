@@ -27,31 +27,41 @@ ae_plot_server <- function(id, params, current_id) {
     })
 
     data <- reactive({
+      req(
+        params()$data,
+        params()$settings,
+        current_id()
+      )
 
-      req(params()$data)
-      req(params()$settings)
-      req(current_id())
-
-      safetyCharts::stack_events(
-        data = params()$data,
-        settings = params()$settings
-      ) %>%
-        dplyr::filter(id == current_id())
+      params()$data %>%
+        safetyCharts::stack_events(
+          settings = params()$settings
+        ) %>%
+        dplyr::filter(
+            .data$id == current_id()
+        )
     })
 
     ae_table_dat <- reactive({
       req(data())
 
       data() %>%
-        dplyr::mutate(seq = row_number())
+        dplyr::mutate(
+          seq = row_number()
+        )
     })
 
     sub <- reactive({
       req(data())
 
       data() %>%
-        dplyr::filter(!(is.na(stdy) & is.na(endy))) %>%
-        dplyr::mutate(seq = row_number())
+        dplyr::filter(
+          !is.na(.data$stdy),
+          !is.na(.data$endy)
+        ) %>%
+        dplyr::mutate(
+          seq = row_number()
+        )
     })
 
     footnote <- reactive({
@@ -65,7 +75,7 @@ ae_plot_server <- function(id, params, current_id) {
 
     output$AEplot <- renderUI({
         if(!nrow(sub()) == 0) {
-          AEplot(sub(), footnote())
+          ae_plot(sub(), footnote())
         } else {
           output$text1 <- renderText({paste("No events with valid dates for this subject")})
         }
@@ -75,16 +85,18 @@ ae_plot_server <- function(id, params, current_id) {
         if(!nrow(ae_table_dat()) == 0) {
             ae_table_dat() %>%
                 dplyr::mutate(
-                    details = stringr::str_replace_all(details, "\n", "<br>")
+                  details = stringr::str_replace_all(details, "\n", "<br>")
                 ) %>%
                 dplyr::rename(
-                    `Subject ID` = id,
-                    `Start Day` = stdy,
-                    `End Day` = endy,
-                    `Event Details` = details,
-                    `Domain` = domain
+                  `Subject ID` = .data$id,
+                  `Start Day` = .data$stdy,
+                  `End Day` = .data$endy,
+                  `Event Details` = .data$details,
+                  `Domain` = .data$domain
                 ) %>%
-                dplyr::select(-seq)
+                dplyr::select(
+                  -seq
+                )
             }
         },
         options = list(

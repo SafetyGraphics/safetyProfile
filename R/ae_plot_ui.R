@@ -8,12 +8,10 @@
 #'
 #' @export
 
-ae_plot_UI <- function(id) {
+ae_plot_ui <- function(id) {
   ns <- NS(id)
 
   fluidPage(
-    # h5(htmlOutput(ns("AE Plot"))),
-    # plotlyOutput(ns("AEplot")),
     textOutput(ns("text1")),
     uiOutput(ns("AEplot")),
     DTOutput(ns("AEtable"))
