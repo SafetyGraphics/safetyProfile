@@ -4,13 +4,12 @@
 #'
 #' @return LB reactable tab UI
 #'
+#' @importFrom shiny dataTableOutput NS
 #'
-#'
-lb_tbl_UI <- function(id){
-  ns <- NS(id)
+#' @export
 
-  # div(
-    # reactableOutput(ns("react"))
-    DT::dataTableOutput(ns("lb_tbl"))
-  # )
+lb_tbl_UI <- function(id){
+  ns <- shiny::NS(id)
+
+  shiny::dataTableOutput(ns("lb_tbl"))
 }

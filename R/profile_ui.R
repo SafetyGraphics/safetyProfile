@@ -4,20 +4,17 @@
 #'
 #' @return returns shiny module UI
 #'
+#' @importFrom htmltools HTML
 #' @import shiny
-#' @import shinyjs
-#' @importFrom plotly plotlyOutput
-#' @importFrom DT DTOutput
-#' @importFrom reactable reactableOutput
+#' @importFrom shinyjs useShinyjs
 #'
 #' @export
-#'
 
 profile_ui <- function(id) {
   ns <- NS(id)
   #read css from package
   css_path <- system.file("www","index.css", package = "safetyProfile")
-  app_css <-  HTML(readLines(css_path))
+  app_css <-  htmltools::HTML(readLines(css_path))
 
   ## bring components together as complete ui
   ui <- tagList(
@@ -31,9 +28,8 @@ profile_ui <- function(id) {
 
     # Call Modules
     tabsetPanel(id=ns("tableWrap"), type = "tabs",
-      tabPanel("Overview",OverviewUI(ns("overview"))),
+      tabPanel("Overview", overview_ui(ns("overview"))),
       tabPanel("Event Timeline", ae_plot_UI(ns("ae_plot"))),
-      # tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot"))),
       tabPanel("Measures Over Time", lb_tbl_UI(ns("lb_tbl")))
     )
   )

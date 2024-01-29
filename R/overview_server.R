@@ -13,7 +13,7 @@
 #'
 #' @export
 
-OverviewServer <- function(id, params, current_id) {
+overview_server <- function(id, params, current_id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

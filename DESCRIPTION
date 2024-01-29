@@ -10,7 +10,24 @@ Authors@R: c(
 	person("Spencer","Childress", role="aut"),
     person("Stephanie","Lussier", role="aut"))
 Description: Interactive patient profile for monitoring clinical trial safety. Allows users to look across multiple data domains and investigate trends for any participant in a clinical trial. This tool provides a stand-along shiny application (profileApp) and a flexible shiny modules allowing this tool to be used as a part of more robust safety monitoring framework like the Shiny app from the safetyGraphics R package. 
+Imports:
+    dplyr,
+    DT,
+    ggplot2,
+    glue,
+    htmlwidgets,
+    magrittr,
+    plotly,
+    purrr,
+    rlang,
+    safetyCharts,
+    shiny,
+    shinyjs,
+    sparkline,
+    stringr
+Remotes:
+    safetyCharts=SafetyGraphics/safetyCharts
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

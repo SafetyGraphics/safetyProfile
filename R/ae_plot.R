@@ -6,11 +6,7 @@
 #' @param aeEndVar AE End day column
 #' @param colorVar 	AE Severity
 #'
-#' @import ggplot2
-#' @import plotly
-#' @import glue
 #' @return an AE  plot created with ggplot
-#' @export
 #'
 #' @examples
 #'  AEplot(
@@ -19,8 +15,15 @@
 #'     filter(id == "01-717-1004"),
 #'   footnote = "fff"
 #' )
-
-
+#'
+#' @importFrom dplyr filter mutate
+#' @importFrom forcats fct_reorder fct_rev
+#' @import ggplot2
+#' @importFrom purrr map_chr
+#' @importFrom glue glue
+#' @importFrom plotly ggplotly layout
+#'
+#' @export
 
 AEplot <- function(data, footnote) {
     if (nrow(data) == 0) {
@@ -28,38 +31,39 @@ AEplot <- function(data, footnote) {
     }
 
     p <- data %>%
-        mutate(
-            seq = forcats::fct_reorder(as.character(seq), stdy) %>% forcats::fct_rev()
+        dplyr::mutate(
+            seq = forcats::fct_reorder(as.character(seq), stdy) %>%
+                forcats::fct_rev()
         ) %>%
-        ggplot2::ggplot(aes(
+        ggplot2::ggplot(ggplot2::aes(
             x = stdy,
             y = seq,
             color = domain,
             text = glue::glue("{details}")
         )) +
-        geom_point() +
-        geom_segment(
-            aes(
+        ggplot2::geom_point() +
+        ggplot2::geom_segment(
+            ggplot2::aes(
                 xend = endy,
                 yend = seq
             ),
             linetype = 1,
             linewidth = 2
         ) +
-        scale_colour_brewer(palette = "Dark2") +
-        xlab("Study Day Start/End") +
-        ylab("") +
-        theme_bw() +
-        theme(
-            axis.text.y = element_blank(),
-            axis.ticks.y = element_blank()
+        ggplot2::scale_colour_brewer(palette = "Dark2") +
+        ggplot2::xlab("Study Day Start/End") +
+        ggplot2::ylab("") +
+        ggplot2::theme_bw() +
+        ggplot2::theme(
+            axis.text.y = ggplot2::element_blank(),
+            axis.ticks.y = ggplot2::element_blank()
         )
 
-    n_events_by_domain <- map_chr(
+    n_events_by_domain <- purrr::map_chr(
         unique(data$domain),
         function(domain) {
             n_events <- data %>%
-                filter(.data$domain == !!domain) %>%
+                dplyr::filter(.data$domain == !!domain) %>%
                 nrow()
 
             s <- ifelse(
@@ -87,7 +91,7 @@ AEplot <- function(data, footnote) {
             tooltip = c("text"),
             source = "AEsource"
         ) %>%
-        layout(
+        plotly::layout(
             legend = list(
                 orientation = "h",
                 x = 0,
@@ -101,7 +105,7 @@ AEplot <- function(data, footnote) {
             annotations = list(
                 x = 1,
                 y = -.3,
-                text = glue("{footnote}"),
+                text = footnote,
                 showarrow = F,
                 xref='paper',
                 yref='paper',

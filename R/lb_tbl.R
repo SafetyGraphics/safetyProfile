@@ -8,16 +8,7 @@
 #' @param llnVar lower limit column
 #' @param ulnVar upper limit column
 #'
-#' @import ggplot2
-#' @import DT
-#' @import htmlwidgets
-#' @import sparkline
-#' @importFrom stringr str_glue
-#' @importFrom reactablefmtr fivethirtyeight
-#' @importFrom DT datatable
-#'
 #' @return an lineplot created with ggplot
-#' @export
 #'
 #' @examples
 #' lb_tbl(
@@ -29,12 +20,22 @@
 #'     llnVar = "A1LO",
 #'     ulnVar = "A1HI"
 #'  )
+#'
+#' @import dplyr
+#' @importFrom DT datatable
+#' @importFrom htmlwidgets JS
+#' @importFrom purrr transpose
+#' @importFrom sparkline spk_add_deps spk_chr
+#' @importFrom tibble as_tibble
+#' @importFrom tidyselect everything
+#'
+#' @export
 
 lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar) {
 
   #select and rename data columns
   data <- data %>%
-    select(
+    dplyr::select(
       Measure = {{measureVar}},
       LLN = {{llnVar}},
       ULN = {{ulnVar}},
@@ -42,52 +43,52 @@ lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, u
       `Study Day` = {{studyDayVar}},
       Result = {{resultVar}}
     ) %>%
-    as_tibble() %>%
-    arrange(
+    tibble::as_tibble() %>%
+    dplyr::arrange(
       Measure, `Study Day`
     )
 
   #select min and max for each measure
   min_max <- data %>%
-    group_by(Measure) %>%
-    summarize(LLN = format(min(LLN),digits = 1),
+    dplyr::group_by(Measure) %>%
+    dplyr::summarize(LLN = format(min(LLN),digits = 1),
               ULN = format(max(ULN),digits = 1))
 
   #identify distinct measure values
   par_dt <- data %>%
-      distinct(Measure)
+      dplyr::distinct(Measure)
 
   # Create details column that hold column values in the list
   transposed_data <- data %>%
-    group_by(Measure) %>%
-    summarise(
+    dplyr::group_by(Measure) %>%
+    dplyr::summarize(
         `_details` = list(
             purrr::transpose(
-                across(Visit:Result)
+                dplyr::across(Visit:Result)
             )
         )
     ) %>%
-    mutate(' ' = '&oplus;')
+    dplyr::mutate(' ' = '&oplus;')
 
   # Merge data
-  merged_data <- left_join(par_dt, transposed_data, by = "Measure")
+  merged_data <- dplyr::left_join(par_dt, transposed_data, by = "Measure")
 
   # add sparkline
   sparkline <- data %>%
-    select(Measure, Result) %>%
-    group_by(Measure) %>%
-    summarize(
-      Trend = spk_chr(
+    dplyr::select(Measure, Result) %>%
+    dplyr::group_by(Measure) %>%
+    dplyr::summarize(
+      Trend = sparkline::spk_chr(
         Result, type ="line",
         chartRangeMin = min(Result), chartRangeMax = max(Result)
       ))
 
   # Reorder columns
   reordered_dt <- merged_data %>%
-    select(length(merged_data), everything()) %>%
-    left_join(min_max, by = "Measure") %>%
-    left_join(sparkline) %>%
-    select(' ',
+    dplyr::select(length(merged_data), tidyselect::everything()) %>%
+    dplyr::left_join(min_max, by = "Measure") %>%
+    dplyr::left_join(sparkline) %>%
+    dplyr::select(' ',
         Measure,
         LLN,
         ULN,
@@ -96,7 +97,7 @@ lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, u
     ) # this order is important for JS code
 
 ## the callback
-callback = JS(
+callback <- htmlwidgets::JS(
   "table.column(1).nodes().to$().css({cursor: 'pointer'});",
   "",
   "// make the table header of the nested table",
@@ -190,7 +191,7 @@ callback = JS(
 
 
   reordered_dt %>%
-    datatable(
+    DT::datatable(
       callback = callback,
       escape = FALSE, #-2
       options = list(
@@ -211,5 +212,5 @@ callback = JS(
       # TODO: figure out why rownames can't be turned off
       #rownames = FALSE
     ) %>%
-    spk_add_deps()
+    sparkline::spk_add_deps()
 }

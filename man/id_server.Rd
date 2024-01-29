@@ -18,12 +18,6 @@ id_server(
 \item{params}{parameters object with \code{data} and \code{settings} options. {reactive}}
 
 \item{ptid}{ID to select when module is initialized {reactive}}
-
-\item{input}{module input}
-
-\item{output}{module output}
-
-\item{session}{module session}
 }
 \value{
 returns shiny module Server function

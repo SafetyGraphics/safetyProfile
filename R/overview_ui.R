@@ -9,7 +9,7 @@
 #'
 #' @export
 
-OverviewUI <- function(id) {
+overview_ui <- function(id) {
   ns <- NS(id)
 
   div(

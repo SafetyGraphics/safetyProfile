@@ -5,9 +5,6 @@
 #' @return returns shiny module UI
 #'
 #' @import shiny
-#' @importFrom plotly plotlyOutput
-#' @importFrom DT DTOutput
-#' @importFrom reactable reactableOutput
 #'
 #' @export
 #'

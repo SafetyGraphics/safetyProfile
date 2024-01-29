@@ -7,10 +7,15 @@
 #' @param id Shiny module id
 #' @param current_id current selected id
 #'
-#' @import safetyCharts
-#' @import plotly
 #' @return Reactive containing AE plot and listing
 #'
+#' @importFrom dplyr filter mutate rename select
+#' @importFrom DT renderDT
+#' @importFrom safetyCharts stack_events
+#' @import shiny
+#' @importFrom stringr str_replace_all
+#'
+#' @export
 
 ae_plot_server <- function(id, params, current_id) {
   moduleServer(id, function(input, output, session) {
@@ -31,20 +36,22 @@ ae_plot_server <- function(id, params, current_id) {
         data = params()$data,
         settings = params()$settings
       ) %>%
-        filter(id == current_id())
+        dplyr::filter(id == current_id())
     })
 
     ae_table_dat <- reactive({
       req(data())
-      data()%>%
-      mutate(seq = row_number())
+
+      data() %>%
+        dplyr::mutate(seq = row_number())
     })
 
     sub <- reactive({
       req(data())
+
       data() %>%
-        filter(!(is.na(stdy) & is.na(endy))) %>%
-        mutate(seq = row_number())
+        dplyr::filter(!(is.na(stdy) & is.na(endy))) %>%
+        dplyr::mutate(seq = row_number())
     })
 
     footnote <- reactive({
@@ -55,31 +62,37 @@ ae_plot_server <- function(id, params, current_id) {
         ""
       )
     })
-    output$AEplot <- renderUI(
-      {
+
+    output$AEplot <- renderUI({
         if(!nrow(sub()) == 0) {
-         AEplot(sub(), footnote())
+          AEplot(sub(), footnote())
         } else {
           output$text1 <- renderText({paste("No events with valid dates for this subject")})
         }
-      })
+    })
 
     output$AEtable <- DT::renderDT({
-      if(!nrow(ae_table_dat()) == 0){
-      ae_table_dat() %>%
-        mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
-        rename(`Subject ID` = id,
-               `Start Day` = stdy,
-               `End Day` = endy,
-               `Event Details` = details,
-               `Domain` = domain) %>%
-        select(-seq)
-      }
-    },
-    options = list(paging = FALSE),
-    escape = FALSE,
-    rownames = FALSE)
-
+        if(!nrow(ae_table_dat()) == 0) {
+            ae_table_dat() %>%
+                dplyr::mutate(
+                    details = stringr::str_replace_all(details, "\n", "<br>")
+                ) %>%
+                dplyr::rename(
+                    `Subject ID` = id,
+                    `Start Day` = stdy,
+                    `End Day` = endy,
+                    `Event Details` = details,
+                    `Domain` = domain
+                ) %>%
+                dplyr::select(-seq)
+            }
+        },
+        options = list(
+            paging = FALSE
+        ),
+        escape = FALSE,
+        rownames = FALSE
+    )
   })
 
 }

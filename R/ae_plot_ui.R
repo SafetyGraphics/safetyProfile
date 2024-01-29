@@ -4,15 +4,17 @@
 #'
 #' @return AE plot tab UI
 #'
+#' @import shiny
 #'
+#' @export
+
 ae_plot_UI <- function(id) {
   ns <- NS(id)
 
   fluidPage(
-
-    #h5(htmlOutput(ns("AE Plot"))),
+    # h5(htmlOutput(ns("AE Plot"))),
     # plotlyOutput(ns("AEplot")),
-    textOutput("text1"),
+    textOutput(ns("text1")),
     uiOutput(ns("AEplot")),
     DTOutput(ns("AEtable"))
   )
