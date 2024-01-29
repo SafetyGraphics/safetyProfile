@@ -9,6 +9,7 @@
 #'
 #' @return Reactive containing AE reactable
 #'
+#' @importFrom DT renderDT
 #' @importFrom dplyr filter select
 #' @import shiny
 #'
@@ -34,7 +35,7 @@ lb_tbl_server <-  function(id, params, current_id) {
     })
 
     # TODO: Make this dynamic for any domain provided (use a sub-module?)
-    output$lb_tbl <- shiny::renderDataTable({
+    output$lb_tbl <- DT::renderDT({
       req(current_id())
 
       data <- params()$data$labs %>%

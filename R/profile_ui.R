@@ -29,8 +29,8 @@ profile_ui <- function(id) {
     # Call Modules
     tabsetPanel(id=ns("tableWrap"), type = "tabs",
       tabPanel("Overview", overview_ui(ns("overview"))),
-      tabPanel("Event Timeline", ae_plot_ui(ns("ae_plot"))),
-      tabPanel("Measures Over Time", lb_tbl_ui(ns("lb_tbl")))
+      tabPanel("Event Timeline", ae_plot_ui(ns("ae_plot_ui"))),
+      tabPanel("Measures Over Time", lb_tbl_ui(ns("lb_tbl_ui")))
     )
   )
 

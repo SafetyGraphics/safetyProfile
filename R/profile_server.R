@@ -23,8 +23,8 @@ profile_server <- function(id, params, ptid = reactive({NULL})) {
 
     ## Call  Modules
     overview_server("overview", params, current_id)
-    ae_plot_server("ae_plot", params, current_id)
-    lb_tbl_server("lb_tbl", params, current_id)
+    ae_plot_server("ae_plot_ui", params, current_id)
+    lb_tbl_server("lb_tbl_ui", params, current_id)
 
     return(current_id)
   })
