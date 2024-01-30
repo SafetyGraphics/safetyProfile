@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' data <- safetyData::adam_adlbc %>%
-#'   filter(
+#'   dplyr::filter(
 #'     .data$USUBJID == sample(unique(.data$USUBJID), 1)
 #'   )
 #'

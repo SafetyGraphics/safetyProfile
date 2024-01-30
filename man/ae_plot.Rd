@@ -29,7 +29,7 @@ data <- safetyCharts::stack_events() \%>\%
   dplyr::mutate(
     seq = dplyr::row_number()
   ) \%>\%
-  ungroup()
+  dplyr::ungroup()
 
 data \%>\%
   dplyr::filter(
