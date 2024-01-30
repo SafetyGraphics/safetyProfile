@@ -1,11 +1,8 @@
-#' Safety Reactable Module - Server
+#' Lab Table Module: Server
 #'
-#' @param input Shiny input object
-#' @param output Shiny output object
-#' @param session Shiny session object
-#' @param params parameters object with `data` and `settings` options.
-#' @param id Shiny module id
-#' @param current_id current selected id
+#' @param id `character` Shiny module ID
+#' @param params `list` Named list with `data` and `settings` (reactive).
+#' @param current_id `character` Current participant ID (reactive).
 #'
 #' @return Reactive containing AE reactable
 #'

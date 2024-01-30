@@ -1,4 +1,4 @@
-#' UI that facilitates the AE plot tab that includes AE plot and AE table outputs
+#' Event Timeline Module: UI
 #'
 #' @param id module id
 #'

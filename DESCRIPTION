@@ -23,6 +23,7 @@ Imports:
     purrr,
     rlang,
     safetyCharts,
+    safetyData,
     shiny,
     shinyjs,
     sparkline,

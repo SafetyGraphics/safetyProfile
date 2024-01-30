@@ -1,12 +1,9 @@
-#' Create AE Plot
+#' Create Event Timeline
 #'
-#' @param data AE data frame
-#' @param paramVar AE Preferred Term Column AETERM
-#' @param aeStartVar AE Start day column
-#' @param aeEndVar AE End day column
-#' @param colorVar 	AE Severity
+#' @param data `data.frame` Adverse events data domain
+#' @param footnote `character` Footnote text
 #'
-#' @return an AE  plot created with ggplot
+#' @return `htmlwidget` Event timeline `plotly` object
 #'
 #' @examples
 #'  ae_plot(
@@ -122,6 +119,5 @@ ae_plot <- function(data, footnote) {
                 t = 50
             )
         )
-
 }
 

@@ -1,13 +1,10 @@
-#' AE Plot Module - Server
+#' Event Timeline Module: Server
 #'
-#' @param input Shiny input object
-#' @param output Shiny output object
-#' @param session Shiny session object
-#' @param params parameters object with `data` and `settings` options.
-#' @param id Shiny module id
-#' @param current_id current selected id
+#' @param id `character` Module ID
+#' @param params `list` Named list with `data` and `settings` (reactive)
+#' @param current_id `character` Current participant ID (reactive)
 #'
-#' @return Reactive containing AE plot and listing
+#' @return `function` Module server
 #'
 #' @importFrom dplyr filter mutate rename select
 #' @importFrom DT renderDT
@@ -74,18 +71,22 @@ ae_plot_server <- function(id, params, current_id) {
     })
 
     output$AEplot <- renderUI({
-        if(!nrow(sub()) == 0) {
-          ae_plot(sub(), footnote())
-        } else {
-          output$text1 <- renderText({paste("No events with valid dates for this subject")})
+        if(nrow(sub()) == 0) {
+          output$text1 <- renderText({
+              paste("No events with valid dates for this subject")
+          })
+
+          return(NULL)
         }
+
+        ae_plot(sub(), footnote())
     })
 
     output$AEtable <- DT::renderDT({
         if(!nrow(ae_table_dat()) == 0) {
             ae_table_dat() %>%
                 dplyr::mutate(
-                  details = stringr::str_replace_all(details, "\n", "<br>")
+                  details = stringr::str_replace_all(.data$details, "\n", "<br>")
                 ) %>%
                 dplyr::rename(
                   `Subject ID` = .data$id,
@@ -106,5 +107,4 @@ ae_plot_server <- function(id, params, current_id) {
         rownames = FALSE
     )
   })
-
 }

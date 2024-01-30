@@ -44,7 +44,7 @@ lb_tbl <- function(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, u
     ) %>%
     tibble::as_tibble() %>%
     dplyr::arrange(
-      Measure, `Study Day`
+      .data$Measure, .data$`Study Day`
     )
 
   # select min and max for each measure
