@@ -1,4 +1,4 @@
-#' ID Select Module - Server
+#' ID Select: Server
 #'
 #' @param id Shiny module id
 #' @param params parameters object with `data` and `settings` options. {reactive}

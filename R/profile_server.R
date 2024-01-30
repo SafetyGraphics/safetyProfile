@@ -1,18 +1,14 @@
-#' Safety Profile Module - Server
+#' Safety Profile Module: Server
 #'
-#' @param input module input
-#' @param output module output
-#' @param session module session
-#' @param id Shiny module id
-#' @param params parameters object with `data` and `settings` options. {reactive}
-#' @param ptid ID to select when module is initialized {reactive}
+#' @param id `character` Shiny module ID
+#' @param params `list` Named list with `data` and `settings` (reactive).
+#' @param ptid `character` Current participant ID (reactive).
 #'
-#' @return returns shiny module Server function
+#' @return `function` Module server
 #'
 #' @import shiny
 #'
 #' @export
-
 
 profile_server <- function(id, params, ptid = reactive({NULL})) {
   moduleServer(id, function(input, output, session) {

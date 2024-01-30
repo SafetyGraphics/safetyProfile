@@ -2,7 +2,7 @@
 % Please edit documentation in R/id_server.R
 \name{id_server}
 \alias{id_server}
-\title{ID Select Module - Server}
+\title{ID Select: Server}
 \usage{
 id_server(
   id,
@@ -23,5 +23,5 @@ id_server(
 returns shiny module Server function
 }
 \description{
-ID Select Module - Server
+ID Select: Server
 }

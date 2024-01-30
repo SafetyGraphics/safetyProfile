@@ -1,4 +1,4 @@
-#' Create Event Timeline
+#' Event Timeline
 #'
 #' @param data `data.frame` Adverse events data domain
 #' @param footnote `character` Footnote text
@@ -6,12 +6,24 @@
 #' @return `htmlwidget` Event timeline `plotly` object
 #'
 #' @examples
-#'  ae_plot(
-#'   data = safetyCharts::stack_events() %>%
-#'     mutate(seq = dplyr::row_number()) %>%
-#'     filter(id == "01-717-1004"),
-#'   footnote = "fff"
-#' )
+#' data <- safetyCharts::stack_events() %>%
+#'   dplyr::filter(
+#'     !(is.na(.data$stdy) & is.na(.data$endy))
+#'   ) %>%
+#'   dplyr::arrange(
+#'     .data$id, .data$stdy, .data$endy
+#'   ) %>%
+#'   dplyr::group_by(.data$id) %>%
+#'   dplyr::mutate(
+#'     seq = dplyr::row_number()
+#'   ) %>%
+#'   ungroup()
+#' 
+#' data %>%
+#'   dplyr::filter(
+#'     .data$id == sample(unique(.data$id), 1)
+#'   ) %>%
+#'   ae_plot()
 #'
 #' @importFrom dplyr filter mutate
 #' @importFrom forcats fct_reorder fct_rev
@@ -19,19 +31,28 @@
 #' @importFrom purrr map_chr
 #' @importFrom glue glue
 #' @importFrom plotly ggplotly layout
+#' @importFrom rlang !!
 #'
 #' @export
 
-ae_plot <- function(data, footnote) {
-    if (nrow(data) == 0) {
-        showNotification("No records with start/end date found", type = "warning")
-    }
-
-    p <- data %>%
+ae_plot <- function(data, footnote = '') {
+    data_cleaned <- data %>%
+        dplyr::filter(
+            !(is.na(.data$stdy) & is.na(.data$endy))
+        ) %>%
+        dplyr::arrange(
+            .data$stdy, .data$endy, .data$domain
+        ) %>%
         dplyr::mutate(
             seq = forcats::fct_reorder(as.character(seq), .data$stdy) %>%
                 forcats::fct_rev()
-        ) %>%
+        )
+
+    if (nrow(data_cleaned) == 0) {
+        showNotification("No records with start/end date found.", type = "warning")
+    }
+
+    p <- data_cleaned %>%
         ggplot2::ggplot(ggplot2::aes_string(
             x = 'stdy',
             y = 'seq',
@@ -57,10 +78,12 @@ ae_plot <- function(data, footnote) {
         )
 
     n_events_by_domain <- purrr::map_chr(
-        unique(data$domain),
+        unique(data_cleaned$domain),
         function(domain) {
-            n_events <- data %>%
-                dplyr::filter(.data$domain == !!domain) %>%
+            n_events <- data_cleaned %>%
+                dplyr::filter(
+                  .data$domain == !!domain
+                ) %>%
                 nrow()
 
             s <- ifelse(
@@ -85,9 +108,9 @@ ae_plot <- function(data, footnote) {
     p %>%
         plotly::ggplotly(
             height = ifelse(
-                nrow(data) < 5,
+                nrow(data_cleaned) < 5,
                 300,
-                as.numeric(nrow(data)*35)
+                as.numeric(nrow(data_cleaned)*35)
             ),
             source = "AEsource",
             tooltip = c("text")

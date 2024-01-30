@@ -1,9 +1,10 @@
 #' Event Timeline Module: UI
 #'
-#' @param id module id
+#' @param id `character` Module ID
 #'
-#' @return AE plot tab UI
+#' @return `list` Shiny tag list
 #'
+#' @importFrom DT DTOutput
 #' @import shiny
 #'
 #' @export
@@ -14,6 +15,6 @@ ae_plot_ui <- function(id) {
   fluidPage(
     textOutput(ns("text1")),
     uiOutput(ns("AEplot")),
-    DTOutput(ns("AEtable"))
+    DT::DTOutput(ns("AEtable"))
   )
 }

@@ -1,4 +1,4 @@
-#' Create safety line plot
+#' Lab Table
 #'
 #' @param data long data frame such as LB or VS
 #' @param measureVar term column
@@ -10,16 +10,23 @@
 #'
 #' @return an lineplot created with ggplot
 #'
+#' @return `htmlwidget` Event timeline `plotly` object
+#'
 #' @examples
-#' lb_tbl(
-#'     data=safetyData::adam_adlbh,
+#' data <- safetyData::adam_adlbc %>%
+#'   filter(
+#'     .data$USUBJID == sample(unique(.data$USUBJID), 1)
+#'   )
+#'
+#' data %>%
+#'   lb_tbl(
 #'     measureVar = "PARAM",
 #'     visitVar = "AVISIT",
 #'     studyDayVar = "ADY",
 #'     resultVar = "AVAL",
 #'     llnVar = "A1LO",
 #'     ulnVar = "A1HI"
-#'  )
+#'   )
 #'
 #' @import dplyr
 #' @importFrom DT datatable

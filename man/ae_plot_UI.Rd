@@ -2,16 +2,16 @@
 % Please edit documentation in R/ae_plot_ui.R
 \name{ae_plot_ui}
 \alias{ae_plot_ui}
-\title{UI that facilitates the AE plot tab that includes AE plot and AE table outputs}
+\title{Event Timeline Module: UI}
 \usage{
 ae_plot_ui(id)
 }
 \arguments{
-\item{id}{module id}
+\item{id}{\code{character} Module ID}
 }
 \value{
-AE plot tab UI
+\code{list} Shiny tag list
 }
 \description{
-UI that facilitates the AE plot tab that includes AE plot and AE table outputs
+Event Timeline Module: UI
 }

@@ -2,33 +2,39 @@
 % Please edit documentation in R/ae_plot.R
 \name{ae_plot}
 \alias{ae_plot}
-\title{Create AE Plot}
+\title{Event Timeline}
 \usage{
-ae_plot(data, footnote)
+ae_plot(data, footnote = "")
 }
 \arguments{
-\item{data}{AE data frame}
+\item{data}{\code{data.frame} Adverse events data domain}
 
-\item{paramVar}{AE Preferred Term Column AETERM}
-
-\item{aeStartVar}{AE Start day column}
-
-\item{aeEndVar}{AE End day column}
-
-\item{colorVar}{AE Severity}
+\item{footnote}{\code{character} Footnote text}
 }
 \value{
-an AE  plot created with ggplot
+\code{htmlwidget} Event timeline \code{plotly} object
 }
 \description{
-Create AE Plot
+Event Timeline
 }
 \examples{
- ae_plot(
-  data = safetyCharts::stack_events() \%>\%
-    mutate(seq = dplyr::row_number()) \%>\%
-    filter(id == "01-717-1004"),
-  footnote = "fff"
-)
+data <- safetyCharts::stack_events() \%>\%
+  dplyr::filter(
+    !(is.na(.data$stdy) & is.na(.data$endy))
+  ) \%>\%
+  dplyr::arrange(
+    .data$id, .data$stdy, .data$endy
+  ) \%>\%
+  dplyr::group_by(.data$id) \%>\%
+  dplyr::mutate(
+    seq = dplyr::row_number()
+  ) \%>\%
+  ungroup()
+
+data \%>\%
+  dplyr::filter(
+    .data$id == sample(unique(.data$id), 1)
+  ) \%>\%
+  ae_plot()
 
 }

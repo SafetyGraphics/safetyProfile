@@ -2,16 +2,16 @@
 % Please edit documentation in R/lb_tbl_ui.R
 \name{lb_tbl_ui}
 \alias{lb_tbl_ui}
-\title{UI that facilitates the Safety reactable tab that includes safety reactable}
+\title{Lab Table Module: UI}
 \usage{
 lb_tbl_ui(id)
 }
 \arguments{
-\item{id}{module id}
+\item{id}{\code{character} Module ID}
 }
 \value{
-LB reactable tab UI
+\code{list} Shiny tag list
 }
 \description{
-UI that facilitates the Safety reactable tab that includes safety reactable
+Lab Table Module: UI
 }

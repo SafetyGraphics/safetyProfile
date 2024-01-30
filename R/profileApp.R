@@ -1,9 +1,9 @@
 #' Safety Profile App
 #'
-#' @param dfAE AE Data
-#' @param dfDemog demog data
-#' @param settings safetyGraphics settings
-#' @param ptid participant ID to select when app is initialized
+#' @param data `list` Named list of data domains
+#' @param settings `list` Named list of data domain metadata
+#' @param ptid `character` Initial participant ID; defaults to first ID when sorted alphanumerically
+#' @param runNow `logical` Run app immediately? Default: `TRUE`
 #'
 #' @import shiny
 #' @import safetyData
@@ -93,8 +93,8 @@ profileApp <- function(
     }
   )
 
-  # if(runNow)
-  runApp(app)
-  # else
-  # app
+  if (runNow)
+    runApp(app)
+  else
+    app
 }

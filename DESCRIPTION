@@ -1,5 +1,5 @@
 Package: safetyProfile
-Title: Interactive Patient Profile for Monitoring Clinical Trial Safety
+Title: Interactive Patient Profile for Safety Monitoring of Clinical Trials
 Version: 0.1.0
 Authors@R: c(
 	person("Jeremy", "Wildfire", email = "jwildfire@gmail.com", role = c("cre","aut")),

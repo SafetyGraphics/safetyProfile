@@ -2,26 +2,20 @@
 % Please edit documentation in R/lb_tbl_server.R
 \name{lb_tbl_server}
 \alias{lb_tbl_server}
-\title{Safety Reactable Module - Server}
+\title{Lab Table Module: Server}
 \usage{
 lb_tbl_server(id, params, current_id)
 }
 \arguments{
-\item{id}{Shiny module id}
+\item{id}{\code{character} Shiny module ID}
 
-\item{params}{parameters object with \code{data} and \code{settings} options.}
+\item{params}{\code{list} Named list with \code{data} and \code{settings} (reactive).}
 
-\item{current_id}{current selected id}
-
-\item{input}{Shiny input object}
-
-\item{output}{Shiny output object}
-
-\item{session}{Shiny session object}
+\item{current_id}{\code{character} Current participant ID (reactive).}
 }
 \value{
 Reactive containing AE reactable
 }
 \description{
-Safety Reactable Module - Server
+Lab Table Module: Server
 }

@@ -2,26 +2,20 @@
 % Please edit documentation in R/overview_server.R
 \name{overview_server}
 \alias{overview_server}
-\title{Server that facilitates the mapping of a single data element (column or field) with a simple select UI}
+\title{Data Domain Listing Module: Server}
 \usage{
 overview_server(id, params, current_id)
 }
 \arguments{
-\item{id}{Shiny module id}
+\item{id}{\code{character} Shiny module ID}
 
-\item{params}{parameters object with \code{data} and \code{settings} options.}
+\item{params}{\code{list} Named list with \code{data} and \code{settings} (reactive).}
 
-\item{current_id}{current selected id}
-
-\item{input}{Shiny input object}
-
-\item{output}{Shiny output object}
-
-\item{session}{Shiny session object}
+\item{current_id}{\code{character} Current participant ID (reactive).}
 }
 \value{
-A reactive containing the selected column
+\code{function} Module server
 }
 \description{
-Server that facilitates the mapping of a single data element (column or field) with a simple select UI
+Data Domain Listing Module: Server
 }

@@ -1,4 +1,4 @@
-#' ID Select Module - UI
+#' ID Select Module: UI
 #'
 #' @param id module id
 #'

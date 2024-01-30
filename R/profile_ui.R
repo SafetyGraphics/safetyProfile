@@ -1,8 +1,8 @@
-#' Safety Profile Module - UI
+#' Safety Profile Module: UI
 #'
-#' @param id module id
+#' @param id `character` Module ID
 #'
-#' @return returns shiny module UI
+#' @return `list` Shiny tag list
 #'
 #' @importFrom htmltools HTML
 #' @import shiny

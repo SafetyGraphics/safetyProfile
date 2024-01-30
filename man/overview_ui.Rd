@@ -2,22 +2,16 @@
 % Please edit documentation in R/overview_ui.R
 \name{overview_ui}
 \alias{overview_ui}
-\title{UI that facilitates the mapping of a single data element (column or field) with a simple select UI}
+\title{Data Domain Listing Module: UI}
 \usage{
 overview_ui(id)
 }
 \arguments{
-\item{id}{unique id for the UI}
-
-\item{label}{label associated with the control}
-
-\item{choices}{a list of options for the control}
-
-\item{default}{default value for the control}
+\item{id}{\code{character} Module ID}
 }
 \value{
-returns the selected value wrapped in a \code{reactive()}.
+\code{list} Shiny tag list
 }
 \description{
-UI that facilitates the mapping of a single data element (column or field) with a simple select UI
+Data Domain Listing Module: UI
 }

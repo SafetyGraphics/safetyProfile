@@ -1,16 +1,16 @@
-#' UI that facilitates the Safety reactable tab that includes safety reactable
+#' Lab Table Module: UI
 #'
-#' @param id module id
+#' @param id `character` Module ID
 #'
-#' @return LB reactable tab UI
+#' @return `list` Shiny tag list
 #'
 #' @importFrom DT DTOutput
-#' @importFrom shiny NS
+#' @import shiny
 #'
 #' @export
 
 lb_tbl_ui <- function(id){
-  ns <- shiny::NS(id)
+  ns <- NS(id)
 
   DT::DTOutput(ns("lb_tbl"))
 }
