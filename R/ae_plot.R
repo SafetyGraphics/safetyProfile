@@ -17,7 +17,7 @@
 #'   dplyr::mutate(
 #'     seq = dplyr::row_number()
 #'   ) %>%
-#'   ungroup()
+#'   dplyr::ungroup()
 #' 
 #' data %>%
 #'   dplyr::filter(
@@ -44,7 +44,8 @@ ae_plot <- function(data, footnote = '') {
             .data$stdy, .data$endy, .data$domain
         ) %>%
         dplyr::mutate(
-            seq = forcats::fct_reorder(as.character(seq), .data$stdy) %>%
+            seq = as.character(seq) %>%
+                forcats::fct_reorder(.data$stdy) %>%
                 forcats::fct_rev()
         )
 
