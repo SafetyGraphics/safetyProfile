@@ -32,7 +32,7 @@ Imports:
     tidyselect,
     utils
 Remotes:
-    safetyCharts=SafetyGraphics/safetyCharts
+    safetyCharts=SafetyGraphics/safetyCharts,
     safetyData=SafetyGraphics/safetyData
 License: MIT + file LICENSE
 Encoding: UTF-8
