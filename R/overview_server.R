@@ -1,50 +1,44 @@
-#' @title Server that facilitates the mapping of a single data element (column or field) with a simple select UI
+#' Data Domain Listing Module: Server
 #'
-#' @param input Shiny input object
-#' @param output  Shiny output object
-#' @param session Shiny session object
-#' @param params parameters object with `data` and `settings` options.
-#' @param id Shiny module id
-#' @param current_id current selected id
+#' @param id `character` Shiny module ID
+#' @param params `list` Named list with `data` and `settings` (reactive).
+#' @param current_id `character` Current participant ID (reactive).
 #'
-#' @import purrr
+#' @importFrom dplyr filter
+#' @import shiny
 #'
-#' @return A reactive containing the selected column
+#' @return `function` Module server
 #'
 #' @export
 
-OverviewServer <- function(id, params, current_id) {
+overview_server <- function(id, params, current_id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
-    # Populate list of domains in select
-    domains <- reactive({
-      req(params()$data)
-      names(params()$data)
-    })
 
     observe({
       updateSelectizeInput(
         session,
         inputId = "domainSelect",
-        choices = domains()
+        choices = names(params()$data)
       )
     })
 
-
-    # Render table for selected domain/ID
-    id_col <- reactive({
-      params()$settings$dm$id_col
-    })
-
     domain_choice <- reactive({
-      req(params()$data)
-      req(input$domainSelect)
+      req(
+        params()$data,
+        input$domainSelect
+      )
 
-      params()$data[[input$domainSelect]]
+      params()$data[[
+        input$domainSelect
+      ]]
     })
+
     output$overview <- renderDT({
-      domain_choice() %>% filter(!!sym(id_col()) == current_id())
+      domain_choice() %>%
+          dplyr::filter(
+              .data[[ params()$settings$dm$id_col ]] == current_id()
+          )
     })
   })
 }

@@ -2,26 +2,20 @@
 % Please edit documentation in R/ae_plot_server.R
 \name{ae_plot_server}
 \alias{ae_plot_server}
-\title{AE Plot Module - Server}
+\title{Event Timeline Module: Server}
 \usage{
 ae_plot_server(id, params, current_id)
 }
 \arguments{
-\item{id}{Shiny module id}
+\item{id}{\code{character} Module ID}
 
-\item{params}{parameters object with \code{data} and \code{settings} options.}
+\item{params}{\code{list} Named list with \code{data} and \code{settings} (reactive)}
 
-\item{current_id}{current selected id}
-
-\item{input}{Shiny input object}
-
-\item{output}{Shiny output object}
-
-\item{session}{Shiny session object}
+\item{current_id}{\code{character} Current participant ID (reactive)}
 }
 \value{
-Reactive containing AE plot and listing
+\code{function} Module server
 }
 \description{
-AE Plot Module - Server
+Event Timeline Module: Server
 }

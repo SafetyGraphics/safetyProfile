@@ -1,19 +1,20 @@
-#' UI that facilitates the AE plot tab that includes AE plot and AE table outputs
+#' Event Timeline Module: UI
 #'
-#' @param id module id
+#' @param id `character` Module ID
 #'
-#' @return AE plot tab UI
+#' @return `list` Shiny tag list
 #'
+#' @importFrom DT DTOutput
+#' @import shiny
 #'
-ae_plot_UI <- function(id) {
+#' @export
+
+ae_plot_ui <- function(id) {
   ns <- NS(id)
 
   fluidPage(
-
-    #h5(htmlOutput(ns("AE Plot"))),
-    # plotlyOutput(ns("AEplot")),
-    textOutput("text1"),
+    textOutput(ns("text1")),
     uiOutput(ns("AEplot")),
-    DTOutput(ns("AEtable"))
+    DT::DTOutput(ns("AEtable"))
   )
 }

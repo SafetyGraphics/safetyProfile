@@ -2,16 +2,16 @@
 % Please edit documentation in R/profile_ui.R
 \name{profile_ui}
 \alias{profile_ui}
-\title{Safety Profile Module - UI}
+\title{Safety Profile Module: UI}
 \usage{
 profile_ui(id)
 }
 \arguments{
-\item{id}{module id}
+\item{id}{\code{character} Module ID}
 }
 \value{
-returns shiny module UI
+\code{list} Shiny tag list
 }
 \description{
-Safety Profile Module - UI
+Safety Profile Module: UI
 }

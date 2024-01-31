@@ -1,23 +1,20 @@
-#' Safety Profile Module - UI
+#' Safety Profile Module: UI
 #'
-#' @param id module id
+#' @param id `character` Module ID
 #'
-#' @return returns shiny module UI
+#' @return `list` Shiny tag list
 #'
+#' @importFrom htmltools HTML
 #' @import shiny
-#' @import shinyjs
-#' @importFrom plotly plotlyOutput
-#' @importFrom DT DTOutput
-#' @importFrom reactable reactableOutput
+#' @importFrom shinyjs useShinyjs
 #'
 #' @export
-#'
 
 profile_ui <- function(id) {
   ns <- NS(id)
   #read css from package
   css_path <- system.file("www","index.css", package = "safetyProfile")
-  app_css <-  HTML(readLines(css_path))
+  app_css <-  htmltools::HTML(readLines(css_path))
 
   ## bring components together as complete ui
   ui <- tagList(
@@ -31,10 +28,9 @@ profile_ui <- function(id) {
 
     # Call Modules
     tabsetPanel(id=ns("tableWrap"), type = "tabs",
-      tabPanel("Overview",OverviewUI(ns("overview"))),
-      tabPanel("Event Timeline", ae_plot_UI(ns("ae_plot"))),
-      # tabPanel("LB Plot", safety_lineplot_UI(ns("safety_line_plot"))),
-      tabPanel("Measures Over Time", lb_tbl_UI(ns("lb_tbl")))
+      tabPanel("Overview", overview_ui(ns("overview"))),
+      tabPanel("Event Timeline", ae_plot_ui(ns("ae_plot_ui"))),
+      tabPanel("Measures Over Time", lb_tbl_ui(ns("lb_tbl_ui")))
     )
   )
 

@@ -1,16 +1,18 @@
-#' AE Plot Module - Server
+#' Event Timeline Module: Server
 #'
-#' @param input Shiny input object
-#' @param output Shiny output object
-#' @param session Shiny session object
-#' @param params parameters object with `data` and `settings` options.
-#' @param id Shiny module id
-#' @param current_id current selected id
+#' @param id `character` Module ID
+#' @param params `list` Named list with `data` and `settings` (reactive)
+#' @param current_id `character` Current participant ID (reactive)
 #'
-#' @import safetyCharts
-#' @import plotly
-#' @return Reactive containing AE plot and listing
+#' @return `function` Module server
 #'
+#' @importFrom dplyr filter mutate rename select
+#' @importFrom DT renderDT
+#' @importFrom safetyCharts stack_events
+#' @import shiny
+#' @importFrom stringr str_replace_all
+#'
+#' @export
 
 ae_plot_server <- function(id, params, current_id) {
   moduleServer(id, function(input, output, session) {
@@ -22,29 +24,41 @@ ae_plot_server <- function(id, params, current_id) {
     })
 
     data <- reactive({
+      req(
+        params()$data,
+        params()$settings,
+        current_id()
+      )
 
-      req(params()$data)
-      req(params()$settings)
-      req(current_id())
-
-      safetyCharts::stack_events(
-        data = params()$data,
-        settings = params()$settings
-      ) %>%
-        filter(id == current_id())
+      params()$data %>%
+        safetyCharts::stack_events(
+          settings = params()$settings
+        ) %>%
+        dplyr::filter(
+            .data$id == current_id()
+        )
     })
 
     ae_table_dat <- reactive({
       req(data())
-      data()%>%
-      mutate(seq = row_number())
+
+      data() %>%
+        dplyr::mutate(
+          seq = row_number()
+        )
     })
 
     sub <- reactive({
       req(data())
+
       data() %>%
-        filter(!(is.na(stdy) & is.na(endy))) %>%
-        mutate(seq = row_number())
+        dplyr::filter(
+          !is.na(.data$stdy),
+          !is.na(.data$endy)
+        ) %>%
+        dplyr::mutate(
+          seq = row_number()
+        )
     })
 
     footnote <- reactive({
@@ -55,31 +69,42 @@ ae_plot_server <- function(id, params, current_id) {
         ""
       )
     })
-    output$AEplot <- renderUI(
-      {
-        if(!nrow(sub()) == 0) {
-         AEplot(sub(), footnote())
-        } else {
-          output$text1 <- renderText({paste("No events with valid dates for this subject")})
+
+    output$AEplot <- renderUI({
+        if(nrow(sub()) == 0) {
+          output$text1 <- renderText({
+              paste("No events with valid dates for this subject")
+          })
+
+          return(NULL)
         }
-      })
+
+        ae_plot(sub(), footnote())
+    })
 
     output$AEtable <- DT::renderDT({
-      if(!nrow(ae_table_dat()) == 0){
-      ae_table_dat() %>%
-        mutate(details = stringr::str_replace_all(details, "\n", "<br>")) %>%
-        rename(`Subject ID` = id,
-               `Start Day` = stdy,
-               `End Day` = endy,
-               `Event Details` = details,
-               `Domain` = domain) %>%
-        select(-seq)
-      }
-    },
-    options = list(paging = FALSE),
-    escape = FALSE,
-    rownames = FALSE)
-
+        if(!nrow(ae_table_dat()) == 0) {
+            ae_table_dat() %>%
+                dplyr::mutate(
+                  details = stringr::str_replace_all(.data$details, "\n", "<br>")
+                ) %>%
+                dplyr::rename(
+                  `Subject ID` = .data$id,
+                  `Start Day` = .data$stdy,
+                  `End Day` = .data$endy,
+                  `Event Details` = .data$details,
+                  `Domain` = .data$domain
+                ) %>%
+                dplyr::select(
+                  -seq
+                )
+            }
+        },
+        options = list(
+            paging = FALSE
+        ),
+        escape = FALSE,
+        rownames = FALSE
+    )
   })
-
 }

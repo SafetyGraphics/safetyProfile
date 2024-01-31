@@ -2,7 +2,7 @@
 % Please edit documentation in R/profile_server.R
 \name{profile_server}
 \alias{profile_server}
-\title{Safety Profile Module - Server}
+\title{Safety Profile Module: Server}
 \usage{
 profile_server(
   id,
@@ -13,21 +13,15 @@ profile_server(
 )
 }
 \arguments{
-\item{id}{Shiny module id}
+\item{id}{\code{character} Shiny module ID}
 
-\item{params}{parameters object with \code{data} and \code{settings} options. {reactive}}
+\item{params}{\code{list} Named list with \code{data} and \code{settings} (reactive).}
 
-\item{ptid}{ID to select when module is initialized {reactive}}
-
-\item{input}{module input}
-
-\item{output}{module output}
-
-\item{session}{module session}
+\item{ptid}{\code{character} Current participant ID (reactive).}
 }
 \value{
-returns shiny module Server function
+\code{function} Module server
 }
 \description{
-Safety Profile Module - Server
+Safety Profile Module: Server
 }
