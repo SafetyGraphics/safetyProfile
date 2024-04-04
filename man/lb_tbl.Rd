@@ -2,7 +2,7 @@
 % Please edit documentation in R/lb_tbl.R
 \name{lb_tbl}
 \alias{lb_tbl}
-\title{Create safety line plot}
+\title{Lab Table}
 \usage{
 lb_tbl(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar)
 }
@@ -23,18 +23,26 @@ lb_tbl(data, measureVar, visitVar, studyDayVar, resultVar, llnVar, ulnVar)
 }
 \value{
 an lineplot created with ggplot
+
+\code{htmlwidget} Event timeline \code{plotly} object
 }
 \description{
-Create safety line plot
+Lab Table
 }
 \examples{
-lb_tbl(
-    data=safetyData::adam_adlbh,
+data <- safetyData::adam_adlbc \%>\%
+  dplyr::filter(
+    .data$USUBJID == sample(unique(.data$USUBJID), 1)
+  )
+
+data \%>\%
+  lb_tbl(
     measureVar = "PARAM",
     visitVar = "AVISIT",
     studyDayVar = "ADY",
     resultVar = "AVAL",
     llnVar = "A1LO",
     ulnVar = "A1HI"
- )
+  )
+
 }

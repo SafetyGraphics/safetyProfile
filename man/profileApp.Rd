@@ -13,13 +13,13 @@ profileApp(
 )
 }
 \arguments{
-\item{settings}{safetyGraphics settings}
+\item{data}{\code{list} Named list of data domains}
 
-\item{ptid}{participant ID to select when app is initialized}
+\item{settings}{\code{list} Named list of data domain metadata}
 
-\item{dfAE}{AE Data}
+\item{ptid}{\code{character} Initial participant ID; defaults to first ID when sorted alphanumerically}
 
-\item{dfDemog}{demog data}
+\item{runNow}{\code{logical} Run app immediately? Default: \code{TRUE}}
 }
 \description{
 Safety Profile App

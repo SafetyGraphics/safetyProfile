@@ -2,7 +2,7 @@
 % Please edit documentation in R/id_ui.R
 \name{id_ui}
 \alias{id_ui}
-\title{ID Select Module - UI}
+\title{ID Select Module: UI}
 \usage{
 id_ui(id)
 }
@@ -13,5 +13,5 @@ id_ui(id)
 returns shiny module UI
 }
 \description{
-ID Select Module - UI
+ID Select Module: UI
 }

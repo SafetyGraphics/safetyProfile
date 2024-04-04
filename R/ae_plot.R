@@ -1,65 +1,90 @@
-#' Create AEplot
+#' Event Timeline
 #'
-#' @param data AE data frame
-#' @param paramVar AE Preferred Term Column AETERM
-#' @param aeStartVar AE Start day column
-#' @param aeEndVar AE End day column
-#' @param colorVar 	AE Severity
+#' @param data `data.frame` Adverse events data domain
+#' @param footnote `character` Footnote text
 #'
-#' @import ggplot2
-#' @import plotly
-#' @import glue
-#' @return an AE  plot created with ggplot
-#' @export
+#' @return `htmlwidget` Event timeline `plotly` object
 #'
 #' @examples
-#'  AEplot(
-#'   data = safetyCharts::stack_events() %>%
-#'     mutate(seq = dplyr::row_number()) %>%
-#'     filter(id == "01-717-1004"),
-#'   footnote = "fff"
-#' )
+#' data <- safetyCharts::stack_events() %>%
+#'   dplyr::filter(
+#'     !(is.na(.data$stdy) & is.na(.data$endy))
+#'   ) %>%
+#'   dplyr::arrange(
+#'     .data$id, .data$stdy, .data$endy
+#'   ) %>%
+#'   dplyr::group_by(.data$id) %>%
+#'   dplyr::mutate(
+#'     seq = dplyr::row_number()
+#'   ) %>%
+#'   dplyr::ungroup()
+#' 
+#' data %>%
+#'   dplyr::filter(
+#'     .data$id == sample(unique(.data$id), 1)
+#'   ) %>%
+#'   ae_plot()
+#'
+#' @importFrom dplyr filter mutate
+#' @importFrom forcats fct_reorder fct_rev
+#' @import ggplot2
+#' @importFrom purrr map_chr
+#' @importFrom glue glue
+#' @importFrom plotly ggplotly layout
+#' @importFrom rlang !!
+#'
+#' @export
 
+ae_plot <- function(data, footnote = '') {
+    data_cleaned <- data %>%
+        dplyr::filter(
+            !(is.na(.data$stdy) & is.na(.data$endy))
+        ) %>%
+        dplyr::arrange(
+            .data$stdy, .data$endy, .data$domain
+        ) %>%
+        dplyr::mutate(
+            seq = as.character(seq) %>%
+                forcats::fct_reorder(.data$stdy) %>%
+                forcats::fct_rev()
+        )
 
-
-AEplot <- function(data, footnote) {
-    if (nrow(data) == 0) {
-        showNotification("No records with start/end date found", type = "warning")
+    if (nrow(data_cleaned) == 0) {
+        showNotification("No records with start/end date found.", type = "warning")
     }
 
-    p <- data %>%
-        mutate(
-            seq = forcats::fct_reorder(as.character(seq), stdy) %>% forcats::fct_rev()
-        ) %>%
-        ggplot2::ggplot(aes(
-            x = stdy,
-            y = seq,
-            color = domain,
-            text = glue::glue("{details}")
+    p <- data_cleaned %>%
+        ggplot2::ggplot(ggplot2::aes_string(
+            x = 'stdy',
+            y = 'seq',
+            color = 'domain',
+            text = 'details'
         )) +
-        geom_point() +
-        geom_segment(
-            aes(
-                xend = endy,
-                yend = seq
+        ggplot2::geom_point() +
+        ggplot2::geom_segment(
+            ggplot2::aes_string(
+                xend = 'endy',
+                yend = 'seq'
             ),
             linetype = 1,
             linewidth = 2
         ) +
-        scale_colour_brewer(palette = "Dark2") +
-        xlab("Study Day Start/End") +
-        ylab("") +
-        theme_bw() +
-        theme(
-            axis.text.y = element_blank(),
-            axis.ticks.y = element_blank()
+        ggplot2::scale_colour_brewer(palette = "Dark2") +
+        ggplot2::xlab("Study Day Start/End") +
+        ggplot2::ylab("") +
+        ggplot2::theme_bw() +
+        ggplot2::theme(
+            axis.text.y = ggplot2::element_blank(),
+            axis.ticks.y = ggplot2::element_blank()
         )
 
-    n_events_by_domain <- map_chr(
-        unique(data$domain),
+    n_events_by_domain <- purrr::map_chr(
+        unique(data_cleaned$domain),
         function(domain) {
-            n_events <- data %>%
-                filter(.data$domain == !!domain) %>%
+            n_events <- data_cleaned %>%
+                dplyr::filter(
+                  .data$domain == !!domain
+                ) %>%
                 nrow()
 
             s <- ifelse(
@@ -83,11 +108,15 @@ AEplot <- function(data, footnote) {
 
     p %>%
         plotly::ggplotly(
-            height = ifelse(nrow(data) < 5, 300, as.numeric(nrow(data)*35)),
-            tooltip = c("text"),
-            source = "AEsource"
+            height = ifelse(
+                nrow(data_cleaned) < 5,
+                300,
+                as.numeric(nrow(data_cleaned)*35)
+            ),
+            source = "AEsource",
+            tooltip = c("text")
         ) %>%
-        layout(
+        plotly::layout(
             legend = list(
                 orientation = "h",
                 x = 0,
@@ -101,7 +130,7 @@ AEplot <- function(data, footnote) {
             annotations = list(
                 x = 1,
                 y = -.3,
-                text = glue("{footnote}"),
+                text = footnote,
                 showarrow = F,
                 xref='paper',
                 yref='paper',
@@ -114,6 +143,5 @@ AEplot <- function(data, footnote) {
                 t = 50
             )
         )
-
 }
 
