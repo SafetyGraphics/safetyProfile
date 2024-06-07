@@ -1,0 +1,10 @@
+name: safetyProfile
+title:
+username: rinpharma
+account: rinpharma
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12146004
+bundleId: 8715221
+url: https://rinpharma.shinyapps.io/safetyProfile/
+version: 1
