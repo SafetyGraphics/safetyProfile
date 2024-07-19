@@ -34,36 +34,34 @@ profileApp <- function(
       ),
       aes = list(
         id_col = "USUBJID",
-        siteid_col = "SITEID",
-        bodsys_col = "AEBODSYS",
-        term_col = "AEDECOD",
-        #term_col = "AETERM",
-        severity_col = "AESEV",
         stdy_col = "ASTDY",
-        endy_col = "AENDY"
+        endy_col = "AENDY",
+        term_col = "AEDECOD",
+        bodsys_col = "AEBODSYS",
+        severity_col = "AESEV"
       ),
       labs = list(
         id_col = "USUBJID",
+        visit_col = "AVISIT",
+        studyday_col = "ADY",
         measure_col = "PARAM",
         value_col = "AVAL",
-        studyday_col = "ADY",
-        normal_col_low="A1LO", 
-        normal_col_high="A1HI",
-        visit_col="AVISIT"
+        normal_col_low = "A1LO", 
+        normal_col_high = "A1HI"
       ),
       cm = list(
         id_col = "USUBJID",
-        cmtrt_col = "CMTRT",
         stdy_col = "CMSTDY",
         endy_col = "CMENDY",
+        cmtrt_col = "CMTRT",
         class_col = "CMCLAS",
         desc_col = "CMINDC"
       ),
       ex = list(
         id_col = 'USUBJID',
-        extrt_col = 'EXTRT',
         stdy_col = "EXSTDY",
-        endy_col = "EXENDY"
+        endy_col = "EXENDY",
+        extrt_col = 'EXTRT'
       )
     )
   }
