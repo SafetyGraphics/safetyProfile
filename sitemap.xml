@@ -1,0 +1,23 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/ae_plot.html</loc></url>
+<url><loc>/reference/ae_plot_UI.html</loc></url>
+<url><loc>/reference/ae_plot_server.html</loc></url>
+<url><loc>/reference/id_server.html</loc></url>
+<url><loc>/reference/id_ui.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/lb_tbl.html</loc></url>
+<url><loc>/reference/lb_tbl_UI.html</loc></url>
+<url><loc>/reference/lb_tbl_server.html</loc></url>
+<url><loc>/reference/overview_server.html</loc></url>
+<url><loc>/reference/overview_ui.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/profileApp.html</loc></url>
+<url><loc>/reference/profile_server.html</loc></url>
+<url><loc>/reference/profile_ui.html</loc></url>
+<url><loc>/reference/tidyeval.html</loc></url>
+</urlset>
+
